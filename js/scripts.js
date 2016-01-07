@@ -17,6 +17,40 @@ $(document).ready(function(){
 		}
 	})
 	
+	function copyBoard(board) {
+		var newBoard = [[null, null, null],
+							 [null, null, null],
+							 [null, null, null]]
+		
+		for (var i=0; i < board.length; i++) {
+			for (var j=0; j < board.length; j++) {
+				var val = board[i][j];
+				newBoard[i][j] = val;
+			}
+		}
+		
+		return newBoard;
+	}
+	
+	function smartMove(board, currentTurn, player) {
+		for (var i=0; i < board.length; i++) {
+			for (var j=0; j < board.length; j++) {
+				if (!board[i][j]) {
+					board[i][j] = currentTurn;
+					if (win(board)) {
+						if (winner(board) == player) {
+							return [i, j]
+						} else {
+							// losing position, do nothing
+						}
+					} else {
+						smartMove(board, )
+					}
+				}
+			}
+		}
+	}
+
 	function numToCoords(num) {
 		var x = Math.floor(num/3),
 		y = num % 3;
@@ -54,7 +88,15 @@ $(document).ready(function(){
 		checkBoard();
 	}
 	
-	function checkBoard() {
+	function win(board) {
+		
+	}
+	
+	function winner(board) {
+		
+	}
+	
+	function checkBoard(board) {
 		
 	}
 	
