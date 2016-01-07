@@ -1,18 +1,18 @@
 $(document).ready(function(){
-	var playerTurn = true,
-			computerSymbol = "x",
-			humanSymbol = "o",
-			board = [[null, null, null],
+	var computer = 0,
+			human = 1,
+			currentPlayer = human,
+			board = [[0, null, null],
 							 [null, null, null],
 							 [null, null, null]],
-			colors = {"x": "blue", "o": "red"};
-			
+			colors = {0: "blue", 1: "red"};
+
 	$(".square").click(function(){
 		var num = this.id,
 		 coords = numToCoords(num);
-		 
-		if (playerTurn && !board[coords[0]][coords[1]]) {
-			move(this.id, humanSymbol)
+		 console.log(coords);
+		if (currentPlayer === 1 && !board[coords[0]][coords[1]]) {
+			move(this.id, human)
 			computerTurn();
 		}
 	})
@@ -33,10 +33,10 @@ $(document).ready(function(){
 	}
 	
 	function switchPlayers(currentPlayer) {
-		if (currentPlayer == "x") {
-			return "o";
+		if (currentPlayer == 1) {
+			return 0;
 		} else {
-			return "x";
+			return 1;
 		}
 	}
 	
@@ -52,12 +52,12 @@ $(document).ready(function(){
 		console.log(str);
 	}
 	
-	function smartMove(board, currentPlayer, basePlayer) {
+	function smartMove(board, simPlayer, basePlayer) {
 		printBoard(board);
 		for (var i=0; i < board.length; i++) {
 			for (var j=0; j < board.length; j++) {
 				if (!board[i][j]) {
-					board[i][j] = currentPlayer;
+					board[i][j] = simPlayer;
 					if (win(board)) {
 						if (winner(board) == basePlayer) {
 							return [i, j]
@@ -65,7 +65,7 @@ $(document).ready(function(){
 							// losing position, do nothing
 						}
 					} else {
-						var nextPlayer = switchPlayers(currentPlayer);
+						var nextPlayer = switchPlayers(simPlayer);
 						smartMove(board, nextPlayer, basePlayer);
 					}
 				}
@@ -73,7 +73,7 @@ $(document).ready(function(){
 		}
 	}
 	
-	smartMove(board, computerSymbol, computerSymbol)
+	// smartMove(board, computer, computer)
 
 	function numToCoords(num) {
 		var x = Math.floor(num/3),
@@ -108,7 +108,7 @@ $(document).ready(function(){
 			 
 		board[row][cell] = symbol;
 		updateDisplay();	 
-		playerTurn = !playerTurn;
+		currentPlayer = switchPlayers(currentPlayer);
 		checkBoard();
 	}
 	
@@ -136,6 +136,6 @@ $(document).ready(function(){
 			}
  		}
 
-		move(selection, computerSymbol)
+		move(selection, computer)
 	}
 })
