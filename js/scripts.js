@@ -32,24 +32,48 @@ $(document).ready(function(){
 		return newBoard;
 	}
 	
-	function smartMove(board, currentTurn, player) {
+	function switchPlayers(currentPlayer) {
+		if (currentPlayer == "x") {
+			return "o";
+		} else {
+			return "x";
+		}
+	}
+	
+	function printBoard(board) {
+		var str = ""
+		for (var i=0; i < board.length; i++) {
+			for (var j=0; j < board.length; j++) {
+				var val = board[i][j];
+				str += val;
+			}
+			str += " | ";
+		}
+		console.log(str);
+	}
+	
+	function smartMove(board, currentPlayer, basePlayer) {
+		printBoard(board);
 		for (var i=0; i < board.length; i++) {
 			for (var j=0; j < board.length; j++) {
 				if (!board[i][j]) {
-					board[i][j] = currentTurn;
+					board[i][j] = currentPlayer;
 					if (win(board)) {
-						if (winner(board) == player) {
+						if (winner(board) == basePlayer) {
 							return [i, j]
 						} else {
 							// losing position, do nothing
 						}
 					} else {
-						smartMove(board, )
+						var nextPlayer = switchPlayers(currentPlayer);
+						smartMove(board, nextPlayer, basePlayer);
 					}
 				}
 			}
 		}
 	}
+	
+	smartMove(board, computerSymbol, computerSymbol)
 
 	function numToCoords(num) {
 		var x = Math.floor(num/3),
