@@ -5,14 +5,24 @@ $(document).ready(function(){
 			
 	$(".square").click(function(){
 		if ($(this).hasClass("empty") && playerTurn) {
-			$(this).removeClass("empty");
-			$(this).addClass(humanSymbol);
-			$(this).append("<p>" + humanSymbol + "</p>");
-			playerTurn = false;
-			checkBoard();
+			move(this, humanSymbol)
 			computerTurn();
 		}
 	})
+	
+	function move(square, symbol) {
+		var color;
+		if (playerTurn) {
+			color = "red";
+		} else {
+			color = "blue";
+		}
+		$(square).removeClass("empty");
+		$(square).addClass(symbol);
+		$(square).css('background-color', color)
+		playerTurn = !playerTurn;
+		checkBoard();
+	}
 	
 	function checkBoard() {
 		
@@ -21,10 +31,6 @@ $(document).ready(function(){
 	function computerTurn() {
 		var empties = $("#board").find(".empty"),
 				square = empties[Math.floor(Math.random()*empties.length)];
-				$(square).removeClass("empty");
-				$(square).addClass(humanSymbol);
-				$(square).append("<p>" + computerSymbol + "</p>");
-				playerTurn = true;
-				checkBoard();
+				move(square, computerSymbol)
 	}
 })
