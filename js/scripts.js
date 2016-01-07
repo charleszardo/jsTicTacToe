@@ -8,11 +8,28 @@ $(document).ready(function(){
 			colors = {"x": "blue", "o": "red"};
 			
 	$(".square").click(function(){
-		if ($(this).hasClass("empty") && playerTurn) {
-			move(this, humanSymbol)
+		var num = this.id,
+		 coords = numToCoords(num);
+		 
+		if (playerTurn && !board[coords[0]][coords[1]]) {
+			move(this.id, humanSymbol)
 			computerTurn();
 		}
 	})
+	
+	function numToCoords(num) {
+		var x = Math.floor(num/3),
+		y = num % 3;
+		
+		return [x,y];
+	}
+	
+	function coordsToNum(coords) {
+		var x = coords[0],
+				y = coords[1];
+		
+		return x * 3 + y;
+	}
 	
 	function updateDisplay() {
 		for (var i=0; i < board.length; i++) {
@@ -27,12 +44,10 @@ $(document).ready(function(){
 		}
 	}
 	
-	updateDisplay();
-	
-	function move(square, symbol) {		
-		var loc = square.id,
-				row = Math.floor(loc/3),
+	function move(loc, symbol) {
+		var row = Math.floor(loc/3),
 			 cell = loc % 3;
+			 
 		board[row][cell] = symbol;
 		updateDisplay();	 
 		playerTurn = !playerTurn;
@@ -44,8 +59,17 @@ $(document).ready(function(){
 	}
 	
 	function computerTurn() {
-		var empties = $("#board").find(".empty"),
-				square = empties[Math.floor(Math.random()*empties.length)];
-				move(square, computerSymbol)
+		var selection;
+		
+		while (!selection) {
+			var x = Math.floor(Math.random() * 3),
+					y = Math.floor(Math.random() * 3);
+			
+			if (!board[x][y]) {
+				selection = x * 3 + y;
+			}
+ 		}
+
+		move(selection, computerSymbol)
 	}
 })
