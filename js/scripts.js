@@ -2,9 +2,9 @@ $(document).ready(function(){
 	var playerTurn = true,
 			computerSymbol = "x",
 			humanSymbol = "o",
-			board = [["x", null, null],
-							 [null, "o", null],
-							 [null, "x", null]],
+			board = [[null, null, null],
+							 [null, null, null],
+							 [null, null, null]],
 			colors = {"x": "blue", "o": "red"};
 			
 	$(".square").click(function(){
@@ -29,16 +29,12 @@ $(document).ready(function(){
 	
 	updateDisplay();
 	
-	function move(square, symbol) {
-		var color;
-		if (playerTurn) {
-			color = "red";
-		} else {
-			color = "blue";
-		}
-		$(square).removeClass("empty");
-		$(square).addClass(symbol);
-		$(square).css('background-color', color)
+	function move(square, symbol) {		
+		var loc = square.id,
+				row = Math.floor(loc/3),
+			 cell = loc % 3;
+		board[row][cell] = symbol;
+		updateDisplay();	 
 		playerTurn = !playerTurn;
 		checkBoard();
 	}
