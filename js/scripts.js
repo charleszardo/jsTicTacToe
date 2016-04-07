@@ -71,8 +71,6 @@ $(document).ready(function(){
 			}
 		}
 	}
-	
-	// smartMove(board, computer, computer)
 
 	function numToCoords(num) {
 		var x = Math.floor(num/3),
@@ -107,9 +105,11 @@ $(document).ready(function(){
 			 
 		board[row][cell] = symbol;
 		updateDisplay();
-		checkBoard(board);	 
-		currentPlayer = switchPlayers(currentPlayer);
-		
+		if (win(board)) {
+			console.log(winner());
+		} else {
+			currentPlayer = switchPlayers(currentPlayer);
+		}
 	}
 	
 	function win(board) {
@@ -141,18 +141,11 @@ $(document).ready(function(){
 	}
 	
 	function winningSet(set) {
-		return set[0] === set[1] === set[2];
+		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
 	
 	function winner(board) {
 		return currentPlayer;
-	}
-	
-	function checkBoard(board) {
-		if (win(board)) {
-			alert('game over!')
-			console.log(winner(board));
-		}
 	}
 	
 	function computerTurn() {
