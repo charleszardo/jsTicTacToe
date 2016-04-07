@@ -10,7 +10,7 @@ $(document).ready(function(){
 	$(".square").click(function(){
 		var num = this.id,
 		 coords = numToCoords(num);
-		if (currentPlayer === 1 && !board[coords[0]][coords[1]]) {
+		if (currentPlayer === 1 && board[coords[0]][coords[1]] === null) {
 			move(this.id, human)
 			computerTurn();
 		}
