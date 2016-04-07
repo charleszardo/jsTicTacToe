@@ -2,7 +2,7 @@ $(document).ready(function(){
 	var computer = 0,
 			human = 1,
 			currentPlayer = human,
-			board = [[0, null, null],
+			board = [[null, null, null],
 							 [null, null, null],
 							 [null, null, null]],
 			colors = {0: "blue", 1: "red"};
@@ -10,7 +10,6 @@ $(document).ready(function(){
 	$(".square").click(function(){
 		var num = this.id,
 		 coords = numToCoords(num);
-		 console.log(coords);
 		if (currentPlayer === 1 && !board[coords[0]][coords[1]]) {
 			move(this.id, human)
 			computerTurn();
@@ -92,7 +91,7 @@ $(document).ready(function(){
 	function updateDisplay() {
 		for (var i=0; i < board.length; i++) {
 			for (var j=0; j < board.length; j++) {
-				if (board[i][j]) {
+				if (board[i][j] !== null) {
 					var square = "#" + (i * 3 + j),
 							symbol = board[i][j],
 							color = colors[symbol];
@@ -107,21 +106,53 @@ $(document).ready(function(){
 			 cell = loc % 3;
 			 
 		board[row][cell] = symbol;
-		updateDisplay();	 
+		updateDisplay();
+		checkBoard(board);	 
 		currentPlayer = switchPlayers(currentPlayer);
-		checkBoard();
+		
 	}
 	
 	function win(board) {
+		var cols = [[], [], []],
+				diag = [[board[0][0], board[1][1], board[2][2]],
+							  [board[0][2], board[1][1], board[2][0]]],
+				 win = false,
+				 remaining;
+		board.forEach(function(row) {
+			if (winningSet(row)) {
+				win = true;
+			} else {
+				[0, 1, 2].forEach(function(idx) {
+					cols[idx].push(row[idx]);
+				})
+			}
+		})
+
+		if (!win) {
+			remaining = cols.concat(diag);
+			remaining.forEach(function(set) {
+				if (winningSet(set)) {
+					win = true;
+				}
+			})
+		}
 		
+		return win;
+	}
+	
+	function winningSet(set) {
+		return set[0] === set[1] === set[2];
 	}
 	
 	function winner(board) {
-		
+		return currentPlayer;
 	}
 	
 	function checkBoard(board) {
-		
+		if (win(board)) {
+			alert('game over!')
+			console.log(winner(board));
+		}
 	}
 	
 	function computerTurn() {
