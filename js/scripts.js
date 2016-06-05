@@ -14,8 +14,8 @@ var game = {
 		}
 		
 		this.currentPlayer = Math.floor(Math.random() * 2);
-		if (this.currentPlayer === computerSym) {
-			thicomputerTurn();
+		if (this.currentPlayer === this.computerSym) {
+			this.computerTurn();
 		}
 	},
 	initPadHandler: function () {
@@ -36,18 +36,33 @@ var game = {
 		    y = num % 3;
 
 		return [x,y];
+	},
+	computerTurn: function () {
+		var selection;
+
+		while (!selection) {
+			var x = Math.floor(Math.random() * 3),
+					y = Math.floor(Math.random() * 3);
+
+			if (!this.board[x][y]) {
+				selection = x * 3 + y;
+			}
+ 		}
+
+		this.move(selection, this.computer)
+	},
+	move: function(loc, symbol) {
+		var row = Math.floor(loc/3),
+			 cell = loc % 3;
+
+		this.board[row][cell] = symbol;
+		this.updateDisplay();
 	}
 }
 
 
 $(document).ready(function(){
-	function move(loc, symbol) {
-		var row = Math.floor(loc/3),
-			 cell = loc % 3;
-
-		board[row][cell] = symbol;
-		updateDisplay();
-	}
+	game.init();
 	
 	// play: function () {
 	// 	while (!this.gameOver) {
@@ -168,21 +183,6 @@ $(document).ready(function(){
 
 	function winner(board) {
 		return currentPlayer;
-	}
-
-	function computerTurn() {
-		var selection;
-
-		while (!selection) {
-			var x = Math.floor(Math.random() * 3),
-					y = Math.floor(Math.random() * 3);
-
-			if (!board[x][y]) {
-				selection = x * 3 + y;
-			}
- 		}
-
-		move(selection, computer)
 	}
 	
 	
