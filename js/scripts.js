@@ -1,13 +1,19 @@
 var game = {
-	computerSym = 0,
-	humanSym = 1,
-	currentPlayer = 1,
-	board = [[null, null, null],
+	computerSym: 0,
+	humanSym: 1,
+	currentPlayer: 1,
+	board: [[null, null, null],
 					 [null, null, null],
-					 [null, null, null],
-	colors = {0: "blue", 1: "red"},
-	gameOver = false,
-	handler = false,
+					 [null, null, null]],
+	colors: {0: "blue", 1: "red"},
+	gameOver: false,
+	handler: false,
+	init: function () {
+		if (!this.handler) {
+			this.initPadHandler();
+		}
+		this.play();
+	},
 	initPadHandler: function () {
 		var that = this;
 		this.handler = true;
@@ -22,7 +28,7 @@ var game = {
 		})
 	},
 	numToCoords: function(num) {
-		var x = Math.floor(num/3),
+		var x = Math.floor(num/3),e
 		    y = num % 3;
 
 		return [x,y];
