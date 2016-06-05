@@ -14,6 +14,7 @@ var game = {
 		}
 		
 		this.currentPlayer = Math.floor(Math.random() * 2);
+		console.log(this.currentPlayer);
 		if (this.currentPlayer === this.computerSym) {
 			this.computerTurn();
 		}
@@ -49,7 +50,7 @@ var game = {
 			}
  		}
 
-		this.move(selection, this.computer)
+		this.move(selection, this.computerSym)
 	},
 	move: function(loc, symbol) {
 		var row = Math.floor(loc/3),
@@ -57,6 +58,24 @@ var game = {
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
+	},
+	updateDisplay: function () {
+		var i,
+		    j,
+		    square,
+		    symbol,
+		    color;
+		
+		for (i = 0; i < this.board.length; i++) {
+			for (j = 0; j < this.board.length; j++) {
+				if (this.board[i][j] !== null) {
+					square = "#" + (i * 3 + j),
+					symbol = this.board[i][j],
+					color = this.colors[symbol];
+					$(square).css('background-color', color)
+				}
+			}
+		}
 	}
 }
 
@@ -134,19 +153,6 @@ $(document).ready(function(){
 				y = coords[1];
 
 		return x * 3 + y;
-	}
-
-	function updateDisplay() {
-		for (var i=0; i < board.length; i++) {
-			for (var j=0; j < board.length; j++) {
-				if (board[i][j] !== null) {
-					var square = "#" + (i * 3 + j),
-							symbol = board[i][j],
-							color = colors[symbol];
-					$(square).css('background-color', color)
-				}
-			}
-		}
 	}
 
 	function win(board) {
