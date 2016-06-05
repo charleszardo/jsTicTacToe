@@ -20,28 +20,17 @@ var game = {
 					// need to do something here
 				}
 		})
+	},
+	numToCoords: function(num) {
+		var x = Math.floor(num/3),
+		    y = num % 3;
+
+		return [x,y];
 	}
 }
 
 
 $(document).ready(function(){
-	var computer = 0,
-			human = 1,
-			currentPlayer = 1,
-			board = [[null, null, null],
-							 [null, null, null],
-							 [null, null, null]],
-			colors = {0: "blue", 1: "red"},
-	    gameOver = false;
-
-	$(".square").click(function(){
-		var coords = numToCoords(this.id);
-
-		if (currentPlayer === 1 && board[coords[0]][coords[1]] === null) {
-			// move(this.id, human)
-// 			computerTurn();
-		}
-	})
 
 	function play() {
 		// while (!gameOver) {
@@ -49,10 +38,6 @@ $(document).ready(function(){
 		// }
 		console.log('game over');
 		console.log(winner(board));
-	}
-
-	function round() {
-
 	}
 
 	function move(loc, symbol) {
@@ -117,13 +102,6 @@ $(document).ready(function(){
 				}
 			}
 		}
-	}
-
-	function numToCoords(num) {
-		var x = Math.floor(num/3),
-		y = num % 3;
-
-		return [x,y];
 	}
 
 	function coordsToNum(coords) {
