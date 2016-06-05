@@ -1,7 +1,7 @@
 var game = {
 	computerSym: 0,
 	humanSym: 1,
-	currentPlayer: 1,
+	currentPlayer: null,
 	board: [[null, null, null],
 					 [null, null, null],
 					 [null, null, null]],
@@ -12,7 +12,11 @@ var game = {
 		if (!this.handler) {
 			this.initPadHandler();
 		}
-		this.play();
+		
+		this.currentPlayer = Math.floor(Math.random() * 2);
+		if (this.currentPlayer === computerSym) {
+			thicomputerTurn();
+		}
 	},
 	initPadHandler: function () {
 		var that = this;
@@ -21,7 +25,7 @@ var game = {
 		$(".square").click(function () {
 			var coords = that.numToCoords(this.id)
 			
-			if (that.currentPlayer === 1 &&
+			if (that.currentPlayer === that.humanSym &&
 				that.board[coords[0]][coords[1]] === null) {
 					// need to do something here
 				}
@@ -37,15 +41,6 @@ var game = {
 
 
 $(document).ready(function(){
-
-	function play() {
-		// while (!gameOver) {
-		// 	round();
-		// }
-		console.log('game over');
-		console.log(winner(board));
-	}
-
 	function move(loc, symbol) {
 		var row = Math.floor(loc/3),
 			 cell = loc % 3;
@@ -53,6 +48,15 @@ $(document).ready(function(){
 		board[row][cell] = symbol;
 		updateDisplay();
 	}
+	
+	// play: function () {
+	// 	while (!this.gameOver) {
+	// 		this.round();
+	// 		this.gameOver = true;
+	// 	}
+	// 	console.log('game over');
+	// 	console.log(winner(board));
+	// },
 
 	function copyBoard(board) {
 		var newBoard = [[null, null, null],
@@ -130,8 +134,6 @@ $(document).ready(function(){
 		}
 	}
 
-
-
 	function win(board) {
 		var cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
@@ -182,7 +184,6 @@ $(document).ready(function(){
 
 		move(selection, computer)
 	}
-
-
-	play();
+	
+	
 })
