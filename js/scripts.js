@@ -1,36 +1,69 @@
+var game = {
+	computerSym = 0,
+	humanSym = 1,
+	currentPlayer = 1,
+	board = [[null, null, null],
+					 [null, null, null],
+					 [null, null, null],
+	colors = {0: "blue", 1: "red"},
+	gameOver = false;
+}
+
+
 $(document).ready(function(){
 	var computer = 0,
 			human = 1,
-			currentPlayer = human,
+			currentPlayer = 1,
 			board = [[null, null, null],
 							 [null, null, null],
 							 [null, null, null]],
-			colors = {0: "blue", 1: "red"};
+			colors = {0: "blue", 1: "red"},
+	    gameOver = false;
 
 	$(".square").click(function(){
-		var num = this.id,
-		 coords = numToCoords(num);
+		var coords = numToCoords(this.id);
+
 		if (currentPlayer === 1 && board[coords[0]][coords[1]] === null) {
-			move(this.id, human)
-			computerTurn();
+			// move(this.id, human)
+// 			computerTurn();
 		}
 	})
-	
+
+	function play() {
+		// while (!gameOver) {
+		// 	round();
+		// }
+		console.log('game over');
+		console.log(winner(board));
+	}
+
+	function round() {
+
+	}
+
+	function move(loc, symbol) {
+		var row = Math.floor(loc/3),
+			 cell = loc % 3;
+
+		board[row][cell] = symbol;
+		updateDisplay();
+	}
+
 	function copyBoard(board) {
 		var newBoard = [[null, null, null],
 							 [null, null, null],
 							 [null, null, null]]
-		
+
 		for (var i=0; i < board.length; i++) {
 			for (var j=0; j < board.length; j++) {
 				var val = board[i][j];
 				newBoard[i][j] = val;
 			}
 		}
-		
+
 		return newBoard;
 	}
-	
+
 	function switchPlayers(currentPlayer) {
 		if (currentPlayer == 1) {
 			return 0;
@@ -38,7 +71,7 @@ $(document).ready(function(){
 			return 1;
 		}
 	}
-	
+
 	function printBoard(board) {
 		var str = ""
 		for (var i=0; i < board.length; i++) {
@@ -50,7 +83,7 @@ $(document).ready(function(){
 		}
 		console.log(str);
 	}
-	
+
 	function smartMove(board, simPlayer, basePlayer) {
 		printBoard(board);
 		for (var i=0; i < board.length; i++) {
@@ -75,17 +108,17 @@ $(document).ready(function(){
 	function numToCoords(num) {
 		var x = Math.floor(num/3),
 		y = num % 3;
-		
+
 		return [x,y];
 	}
-	
+
 	function coordsToNum(coords) {
 		var x = coords[0],
 				y = coords[1];
-		
+
 		return x * 3 + y;
 	}
-	
+
 	function updateDisplay() {
 		for (var i=0; i < board.length; i++) {
 			for (var j=0; j < board.length; j++) {
@@ -98,20 +131,9 @@ $(document).ready(function(){
 			}
 		}
 	}
-	
-	function move(loc, symbol) {
-		var row = Math.floor(loc/3),
-			 cell = loc % 3;
-			 
-		board[row][cell] = symbol;
-		updateDisplay();
-		if (win(board)) {
-			console.log(winner());
-		} else {
-			currentPlayer = switchPlayers(currentPlayer);
-		}
-	}
-	
+
+
+
 	function win(board) {
 		var cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
@@ -136,25 +158,25 @@ $(document).ready(function(){
 				}
 			})
 		}
-		
+
 		return win;
 	}
-	
+
 	function winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
-	
+
 	function winner(board) {
 		return currentPlayer;
 	}
-	
+
 	function computerTurn() {
 		var selection;
-		
+
 		while (!selection) {
 			var x = Math.floor(Math.random() * 3),
 					y = Math.floor(Math.random() * 3);
-			
+
 			if (!board[x][y]) {
 				selection = x * 3 + y;
 			}
@@ -162,4 +184,7 @@ $(document).ready(function(){
 
 		move(selection, computer)
 	}
+
+
+	play();
 })
