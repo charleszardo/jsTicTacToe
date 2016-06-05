@@ -29,6 +29,7 @@ var game = {
 			if (that.currentPlayer === that.humanSym &&
 				that.board[coords[0]][coords[1]] === null) {
 					// need to do something here
+					console.log('okaey');
 				}
 		})
 	},
@@ -50,7 +51,7 @@ var game = {
 			}
  		}
 
-		this.move(selection, this.computerSym)
+		this.move(selection, this.computerSym);
 	},
 	move: function(loc, symbol) {
 		var row = Math.floor(loc/3),
@@ -58,6 +59,7 @@ var game = {
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
+		this.switchPlayers();
 	},
 	updateDisplay: function () {
 		var i,
@@ -76,6 +78,13 @@ var game = {
 				}
 			}
 		}
+	},
+	switchPlayers: function() {
+		if (this.currentPlayer === 1) {
+			this.currentPlayer = 0;
+		} else {
+			this.currentPlayer = 1;
+		}
 	}
 }
 
@@ -92,28 +101,22 @@ $(document).ready(function(){
 	// 	console.log(winner(board));
 	// },
 
-	function copyBoard(board) {
-		var newBoard = [[null, null, null],
-							 [null, null, null],
-							 [null, null, null]]
+	// function copyBoard(board) {
+	// 	var newBoard = [[null, null, null],
+	// 						 [null, null, null],
+	// 						 [null, null, null]]
+	//
+	// 	for (var i=0; i < board.length; i++) {
+	// 		for (var j=0; j < board.length; j++) {
+	// 			var val = board[i][j];
+	// 			newBoard[i][j] = val;
+	// 		}
+	// 	}
+	//
+	// 	return newBoard;
+	// }
 
-		for (var i=0; i < board.length; i++) {
-			for (var j=0; j < board.length; j++) {
-				var val = board[i][j];
-				newBoard[i][j] = val;
-			}
-		}
-
-		return newBoard;
-	}
-
-	function switchPlayers(currentPlayer) {
-		if (currentPlayer == 1) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}
+	
 
 	function printBoard(board) {
 		var str = ""
