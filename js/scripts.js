@@ -6,7 +6,21 @@ var game = {
 					 [null, null, null],
 					 [null, null, null],
 	colors = {0: "blue", 1: "red"},
-	gameOver = false;
+	gameOver = false,
+	handler = false,
+	initPadHandler: function () {
+		var that = this;
+		this.handler = true;
+		
+		$(".square").click(function () {
+			var coords = that.numToCoords(this.id)
+			
+			if (that.currentPlayer === 1 &&
+				that.board[coords[0]][coords[1]] === null) {
+					// need to do something here
+				}
+		})
+	}
 }
 
 
