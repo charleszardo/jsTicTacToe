@@ -25,7 +25,7 @@ let game = {
 		this.handler = true;
 		
 		$(".square").click(function () {
-			const coords = that.numToCoords(this.id)
+			const coords = that.numToCoords(this.id);
 			
 			if (that.inPlay &&
 				  that.currentPlayer === that.humanSym &&
@@ -33,7 +33,7 @@ let game = {
 					  that.move(this.id, that.humanSym);
 						that.roundOver();
 				}
-		})
+		});
 	},
 	numToCoords: function(num) {
 		const x = Math.floor(num/3),
@@ -57,7 +57,7 @@ let game = {
 			}
  		}
 		
-		setTimeout(function() {
+		setTimeout(() => {
 			that.move(selection, that.computerSym);
 			that.roundOver();
 		}, 1000);
@@ -112,23 +112,21 @@ let game = {
 				
 		const that = this;
 		
-		board.forEach(function(row) {
+		board.forEach(row => {
 			if (that.winningSet(row)) {
 				win = true;
 			} else {
-				[0, 1, 2].forEach(function(idx) {
-					cols[idx].push(row[idx]);
-				})
+				[0, 1, 2].forEach(idx => cols[idx].push(row[idx]));
 			}
-		})
+		});
 
 		if (!win) {
 			remaining = cols.concat(diag);
-			remaining.forEach(function(set) {
+			remaining.forEach(set => {
 				if (that.winningSet(set)) {
 					win = true;
 				}
-			})
+			});
 		}
 
 		return win;
@@ -138,6 +136,4 @@ let game = {
 	}
 }
 
-$(document).ready(function(){
-	game.init();
-})
+$(document).ready(() => game.init());

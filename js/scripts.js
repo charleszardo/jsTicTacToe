@@ -112,7 +112,7 @@ var game = {
 				win = true;
 			} else {
 				[0, 1, 2].forEach(function (idx) {
-					cols[idx].push(row[idx]);
+					return cols[idx].push(row[idx]);
 				});
 			}
 		});
@@ -134,5 +134,5 @@ var game = {
 };
 
 $(document).ready(function () {
-	game.init();
+	return game.init();
 });
