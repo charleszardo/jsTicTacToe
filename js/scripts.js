@@ -120,7 +120,7 @@ var Game = function () {
 		value: function roundOver() {
 			if (this.checkWin(this.board)) {
 				this.inPlay = false;
-				console.log(this.currentPlayer);
+				this.determineWinner();
 			} else {
 				this.switchPlayers();
 			}
@@ -160,6 +160,25 @@ var Game = function () {
 		key: "winningSet",
 		value: function winningSet(set) {
 			return set[0] !== null && set[0] === set[1] && set[1] === set[2];
+		}
+	}, {
+		key: "determineWinner",
+		value: function determineWinner() {
+			if (this.currentPlayer) {
+				this.winner();
+			} else {
+				this.loser();
+			}
+		}
+	}, {
+		key: "loser",
+		value: function loser() {
+			console.log('you lose!');
+		}
+	}, {
+		key: "winner",
+		value: function winner() {
+			console.log('you win!');
 		}
 	}]);
 

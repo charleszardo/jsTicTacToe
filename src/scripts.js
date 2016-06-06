@@ -109,7 +109,7 @@ class Game {
 	roundOver() {
 		if (this.checkWin(this.board)) {
 			this.inPlay = false;
-			console.log(this.currentPlayer);
+			this.determineWinner();
 		} else {
 			this.switchPlayers();
 		}
@@ -146,6 +146,22 @@ class Game {
 	
   winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
+	}
+	
+	determineWinner() {
+		if (this.currentPlayer) {
+			this.winner();
+		} else {
+			this.loser();
+		}
+	}
+	
+	loser() {
+		console.log('you lose!');
+	}
+	
+	winner() {
+		console.log('you win!');
 	}
 }
 
