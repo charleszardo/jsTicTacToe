@@ -1,13 +1,16 @@
-let game = {
-	computerSym: 0,
-	humanSym: 1,
-	currentPlayer: null,
-	board: [[null, null, null],
-					 [null, null, null],
-					 [null, null, null]],
-	colors: {0: "blue", 1: "red"},
-	inPlay: false,
-	handler: false,
+class Game {
+	constructor() {
+		this.computerSym = 0;
+		this.humanSym = 1;
+		this.currentPlayer = null;
+		this.board = [[null, null, null],
+					 			 [null, null, null],
+								 [null, null, null]];
+		this.colors = {0: "blue", 1: "red"};
+		this.inPlay = false;
+	  this.handler = false;
+	}
+	
 	init() {
 		if (!this.handler) {
 			this.initClickHandler();
@@ -18,14 +21,15 @@ let game = {
 		if (this.currentPlayer === this.computerSym) {
 			this.computerTurn();
 		}
-	},
+	}
+	
 	initClickHandler() {
 		const that = this;
 		
 		this.handler = true;
 		
 		$(".square").click(_square => {
-			const square = _square.toElement.id;
+			const square = _square.toElement.id,
 			      coords = that.numToCoords(square);
 			
 			if (that.inPlay &&
@@ -35,13 +39,15 @@ let game = {
 						that.roundOver();
 				}
 		});
-	},
+	}
+	
 	numToCoords(num) {
 		const x = Math.floor(num/3),
 		      y = num % 3;
 
 		return [x,y];
-	},
+	}
+	
 	computerTurn() {
 		let selection = null,
 		    x,
@@ -62,14 +68,16 @@ let game = {
 			that.move(selection, that.computerSym);
 			that.roundOver();
 		}, 1000);
-	},
+	}
+	
 	move(loc, symbol) {
 		const row = Math.floor(loc/3),
 			   cell = loc % 3;
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
-	},
+	}
+	
 	updateDisplay() {
 		let i,
 		    j,
@@ -87,7 +95,8 @@ let game = {
 				}
 			}
 		}
-	},
+	}
+	
 	switchPlayers() {
 		if (this.currentPlayer === 1) {
 			this.currentPlayer = 0;
@@ -95,7 +104,8 @@ let game = {
 		} else {
 			this.currentPlayer = 1;
 		}
-	},
+	}
+	
 	roundOver() {
 		if (this.checkWin(this.board)) {
 			this.inPlay = false;
@@ -103,7 +113,8 @@ let game = {
 		} else {
 			this.switchPlayers();
 		}
-	},
+	}
+	
 	checkWin(board) {
 		let cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
@@ -131,10 +142,13 @@ let game = {
 		}
 
 		return win;
-	},
+	}
+	
   winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
 }
 
-$(document).ready(() => game.init());
+let game2= new Game();
+
+$(document).ready(() => game2.init());
