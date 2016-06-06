@@ -9,6 +9,7 @@ class Game {
 		this.colors = {0: "blue", 1: "red"};
 		this.inPlay = false;
 	  this.handler = false;
+		this.winner = null;
 	}
 	
 	init() {
@@ -149,19 +150,7 @@ class Game {
 	}
 	
 	determineWinner() {
-		if (this.currentPlayer) {
-			this.winner();
-		} else {
-			this.loser();
-		}
-	}
-	
-	loser() {
-		console.log('you lose!');
-	}
-	
-	winner() {
-		console.log('you win!');
+		this.winner = this.currentPlayer;
 	}
 }
 

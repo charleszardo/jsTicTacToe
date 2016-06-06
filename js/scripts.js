@@ -15,6 +15,7 @@ var Game = function () {
 		this.colors = { 0: "blue", 1: "red" };
 		this.inPlay = false;
 		this.handler = false;
+		this.winner = null;
 	}
 
 	_createClass(Game, [{
@@ -164,21 +165,7 @@ var Game = function () {
 	}, {
 		key: "determineWinner",
 		value: function determineWinner() {
-			if (this.currentPlayer) {
-				this.winner();
-			} else {
-				this.loser();
-			}
-		}
-	}, {
-		key: "loser",
-		value: function loser() {
-			console.log('you lose!');
-		}
-	}, {
-		key: "winner",
-		value: function winner() {
-			console.log('you win!');
+			this.winner = this.currentPlayer;
 		}
 	}]);
 
