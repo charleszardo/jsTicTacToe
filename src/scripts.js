@@ -10,7 +10,7 @@ let game = {
 	handler: false,
 	init: function () {
 		if (!this.handler) {
-			this.initPadHandler();
+			this.initClickHandler();
 		}
 		
 		this.inPlay = true;
@@ -19,18 +19,19 @@ let game = {
 			this.computerTurn();
 		}
 	},
-	initPadHandler: function () {
+	initClickHandler: function () {
 		const that = this;
 		
 		this.handler = true;
 		
-		$(".square").click(function () {
-			const coords = that.numToCoords(this.id);
+		$(".square").click(_square => {
+			const square = _square.toElement.id;
+			      coords = that.numToCoords(square);
 			
 			if (that.inPlay &&
 				  that.currentPlayer === that.humanSym &&
 				  that.board[coords[0]][coords[1]] === null) {
-					  that.move(this.id, that.humanSym);
+					  that.move(square, that.humanSym);
 						that.roundOver();
 				}
 		});
