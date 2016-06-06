@@ -166,8 +166,6 @@ var Game = function () {
 	return Game;
 }();
 
-var game2 = new Game();
-
 $(document).ready(function () {
-	return game2.init();
+	return new Game().init();
 });

@@ -4,8 +4,8 @@ class Game {
 		this.humanSym = 1;
 		this.currentPlayer = null;
 		this.board = [[null, null, null],
-					 			 [null, null, null],
-								 [null, null, null]];
+									[null, null, null],
+									[null, null, null]];
 		this.colors = {0: "blue", 1: "red"};
 		this.inPlay = false;
 	  this.handler = false;
@@ -33,25 +33,25 @@ class Game {
 			      coords = that.numToCoords(square);
 			
 			if (that.inPlay &&
-				  that.currentPlayer === that.humanSym &&
-				  that.board[coords[0]][coords[1]] === null) {
-					  that.move(square, that.humanSym);
-						that.roundOver();
-				}
+						that.currentPlayer === that.humanSym &&
+						that.board[coords[0]][coords[1]] === null) {
+							that.move(square, that.humanSym);
+							that.roundOver();
+					}
 		});
 	}
 	
 	numToCoords(num) {
 		const x = Math.floor(num/3),
-		      y = num % 3;
+					y = num % 3;
 
 		return [x,y];
 	}
 	
 	computerTurn() {
 		let selection = null,
-		    x,
-		    y;
+				x,
+				y;
 				
 		const that = this;
 
@@ -72,7 +72,7 @@ class Game {
 	
 	move(loc, symbol) {
 		const row = Math.floor(loc/3),
-			   cell = loc % 3;
+					cell = loc % 3;
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
@@ -80,10 +80,10 @@ class Game {
 	
 	updateDisplay() {
 		let i,
-		    j,
-		    square,
-		    symbol,
-		    color;
+				j,
+				square,
+				symbol,
+				color;
 		
 		for (i = 0; i < this.board.length; i++) {
 			for (j = 0; j < this.board.length; j++) {
@@ -118,7 +118,7 @@ class Game {
 	checkWin(board) {
 		let cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
-							  [board[0][2], board[1][1], board[2][0]]],
+								[board[0][2], board[1][1], board[2][0]]],
 				win = false,
 				remaining;
 				
@@ -149,6 +149,4 @@ class Game {
 	}
 }
 
-let game2= new Game();
-
-$(document).ready(() => game2.init());
+$(document).ready(() => new Game().init());
