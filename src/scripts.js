@@ -8,7 +8,7 @@ let game = {
 	colors: {0: "blue", 1: "red"},
 	inPlay: false,
 	handler: false,
-	init: function () {
+	init() {
 		if (!this.handler) {
 			this.initClickHandler();
 		}
@@ -19,7 +19,7 @@ let game = {
 			this.computerTurn();
 		}
 	},
-	initClickHandler: function () {
+	initClickHandler() {
 		const that = this;
 		
 		this.handler = true;
@@ -36,13 +36,13 @@ let game = {
 				}
 		});
 	},
-	numToCoords: function(num) {
+	numToCoords(num) {
 		const x = Math.floor(num/3),
 		      y = num % 3;
 
 		return [x,y];
 	},
-	computerTurn: function () {
+	computerTurn() {
 		let selection = null,
 		    x,
 		    y;
@@ -63,14 +63,14 @@ let game = {
 			that.roundOver();
 		}, 1000);
 	},
-	move: function(loc, symbol) {
+	move(loc, symbol) {
 		const row = Math.floor(loc/3),
 			   cell = loc % 3;
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
 	},
-	updateDisplay: function () {
+	updateDisplay() {
 		let i,
 		    j,
 		    square,
@@ -88,7 +88,7 @@ let game = {
 			}
 		}
 	},
-	switchPlayers: function() {
+	switchPlayers() {
 		if (this.currentPlayer === 1) {
 			this.currentPlayer = 0;
 			this.computerTurn();
@@ -96,7 +96,7 @@ let game = {
 			this.currentPlayer = 1;
 		}
 	},
-	roundOver: function () {
+	roundOver() {
 		if (this.checkWin(this.board)) {
 			this.inPlay = false;
 			console.log(this.currentPlayer);
@@ -104,7 +104,7 @@ let game = {
 			this.switchPlayers();
 		}
 	},
-	checkWin: function (board) {
+	checkWin(board) {
 		let cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
 							  [board[0][2], board[1][1], board[2][0]]],
@@ -132,7 +132,7 @@ let game = {
 
 		return win;
 	},
-  winningSet: function(set) {
+  winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
 }
