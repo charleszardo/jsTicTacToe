@@ -13,6 +13,7 @@ class Game {
 	}
 	
 	init() {
+		this.boardFull();
 		if (!this.handler) {
 			this.initClickHandler();
 		}
@@ -112,7 +113,11 @@ class Game {
 			this.inPlay = false;
 			this.determineWinner();
 			this.gameOver();
-		} else {
+		} else if (this.boardFull()) {
+			this.determineWinner(true);
+			this.gameOver();
+		}
+			else {
 			this.switchPlayers();
 		}
 	}
@@ -146,21 +151,39 @@ class Game {
 		return win;
 	}
 	
+	boardFull() {
+		let full = true;
+		
+		this.board.forEach(row => {
+			row.forEach(cell => {
+				if (!cell) {
+					full = false;
+				}
+			})
+		})
+		
+		return full;
+	}
+	
   winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
 	
-	determineWinner() {
-		this.winner = this.currentPlayer;
+	determineWinner(tie=false) {
+		if (!tie) {
+			this.winner = this.currentPlayer;
+		}
 	}
 	
 	gameOver() {
 		let text;
 		
-		if (this.winner) {
+		if (this.winner === 1) {
 			text = "you win!";
-		} else {
+		} else if (this.winner === 0) {
 			text = "you lose!";
+		} else {
+			text = "draw!";
 		}
 		
 		$(".winner-phrase").html(text);

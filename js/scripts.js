@@ -21,6 +21,7 @@ var Game = function () {
 	_createClass(Game, [{
 		key: "init",
 		value: function init() {
+			this.boardFull();
 			if (!this.handler) {
 				this.initClickHandler();
 			}
@@ -123,6 +124,9 @@ var Game = function () {
 				this.inPlay = false;
 				this.determineWinner();
 				this.gameOver();
+			} else if (this.boardFull()) {
+				this.determineWinner(true);
+				this.gameOver();
 			} else {
 				this.switchPlayers();
 			}
@@ -159,6 +163,21 @@ var Game = function () {
 			return win;
 		}
 	}, {
+		key: "boardFull",
+		value: function boardFull() {
+			var full = true;
+
+			this.board.forEach(function (row) {
+				row.forEach(function (cell) {
+					if (!cell) {
+						full = false;
+					}
+				});
+			});
+
+			return full;
+		}
+	}, {
 		key: "winningSet",
 		value: function winningSet(set) {
 			return set[0] !== null && set[0] === set[1] && set[1] === set[2];
@@ -166,17 +185,23 @@ var Game = function () {
 	}, {
 		key: "determineWinner",
 		value: function determineWinner() {
-			this.winner = this.currentPlayer;
+			var tie = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
+			if (!tie) {
+				this.winner = this.currentPlayer;
+			}
 		}
 	}, {
 		key: "gameOver",
 		value: function gameOver() {
 			var text = void 0;
 
-			if (this.winner) {
+			if (this.winner === 1) {
 				text = "you win!";
-			} else {
+			} else if (this.winner === 0) {
 				text = "you lose!";
+			} else {
+				text = "draw!";
 			}
 
 			$(".winner-phrase").html(text);
