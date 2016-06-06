@@ -13,6 +13,7 @@ var game = {
 			this.initPadHandler();
 		}
 		
+		this.inPlay = true;
 		this.currentPlayer = Math.floor(Math.random() * 2);
 		if (this.currentPlayer === this.computerSym) {
 			this.computerTurn();
@@ -20,12 +21,14 @@ var game = {
 	},
 	initPadHandler: function () {
 		var that = this;
+		
 		this.handler = true;
 		
 		$(".square").click(function () {
 			var coords = that.numToCoords(this.id)
 			
-			if (that.currentPlayer === that.humanSym &&
+			if (that.inPlay &&
+				  that.currentPlayer === that.humanSym &&
 				  that.board[coords[0]][coords[1]] === null) {
 					  that.move(this.id, that.humanSym);
 						that.roundOver();
@@ -40,6 +43,7 @@ var game = {
 	},
 	computerTurn: function () {
 		var selection = null,
+		    that = this,
 		    x,
 		    y;
 
@@ -52,8 +56,10 @@ var game = {
 			}
  		}
 		
-		this.move(selection, this.computerSym);
-		this.roundOver();
+		setTimeout(function() {
+			that.move(selection, that.computerSym);
+			that.roundOver();
+		}, 1000);
 	},
 	move: function(loc, symbol) {
 		var row = Math.floor(loc/3),
@@ -90,6 +96,7 @@ var game = {
 	},
 	roundOver: function () {
 		if (this.checkWin(this.board)) {
+			this.inPlay = false;
 			console.log(this.currentPlayer);
 		} else {
 			this.switchPlayers();
@@ -191,17 +198,4 @@ $(document).ready(function(){
 	// 		}
 	// 	}
 	// }
-
-	function coordsToNum(coords) {
-		var x = coords[0],
-				y = coords[1];
-
-		return x * 3 + y;
-	}
-
-	function winner(board) {
-		return currentPlayer;
-	}
-	
-	
 })
