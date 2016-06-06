@@ -6,7 +6,7 @@ var game = {
 					 [null, null, null],
 					 [null, null, null]],
 	colors: {0: "blue", 1: "red"},
-	gameOver: false,
+	inPlay: false,
 	handler: false,
 	init: function () {
 		if (!this.handler) {
@@ -89,9 +89,11 @@ var game = {
 		}
 	},
 	roundOver: function () {
-		console.log(this.checkWin(this.board));
-		
-		this.switchPlayers();
+		if (this.checkWin(this.board)) {
+			console.log(this.currentPlayer);
+		} else {
+			this.switchPlayers();
+		}
 	},
 	checkWin: function (board) {
 		var cols = [[], [], []],
@@ -196,9 +198,6 @@ $(document).ready(function(){
 
 		return x * 3 + y;
 	}
-
-	
-
 
 	function winner(board) {
 		return currentPlayer;
