@@ -14,7 +14,6 @@ var game = {
 		}
 		
 		this.currentPlayer = Math.floor(Math.random() * 2);
-		console.log(this.currentPlayer);
 		if (this.currentPlayer === this.computerSym) {
 			this.computerTurn();
 		}
@@ -27,9 +26,9 @@ var game = {
 			var coords = that.numToCoords(this.id)
 			
 			if (that.currentPlayer === that.humanSym &&
-				that.board[coords[0]][coords[1]] === null) {
-					// need to do something here
-					console.log('okaey');
+				  that.board[coords[0]][coords[1]] === null) {
+					  that.move(this.id, that.humanSym);
+						that.switchPlayers();
 				}
 		})
 	},
@@ -40,18 +39,21 @@ var game = {
 		return [x,y];
 	},
 	computerTurn: function () {
-		var selection;
+		var selection = null,
+		    x,
+		    y;
 
-		while (!selection) {
-			var x = Math.floor(Math.random() * 3),
-					y = Math.floor(Math.random() * 3);
+		while (selection === null) {
+			x = Math.floor(Math.random() * 3);
+		  y = Math.floor(Math.random() * 3);
 
-			if (!this.board[x][y]) {
+			if (this.board[x][y] === null) {
 				selection = x * 3 + y;
 			}
  		}
-
+		
 		this.move(selection, this.computerSym);
+		this.switchPlayers();
 	},
 	move: function(loc, symbol) {
 		var row = Math.floor(loc/3),
@@ -59,7 +61,6 @@ var game = {
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
-		this.switchPlayers();
 	},
 	updateDisplay: function () {
 		var i,
@@ -82,6 +83,7 @@ var game = {
 	switchPlayers: function() {
 		if (this.currentPlayer === 1) {
 			this.currentPlayer = 0;
+			this.computerTurn();
 		} else {
 			this.currentPlayer = 1;
 		}
