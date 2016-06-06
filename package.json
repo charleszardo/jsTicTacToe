@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "babel js -d lib"
+    "build": "babel src -d js"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

@@ -8,5 +8,5 @@ gulp.task('serve', () => {
   })
   gulp.watch('css/main.css').on('change', reload)
   gulp.watch('index.html').on('change', reload)
-  gulp.watch('js/scripts.js').on('change', reload)
+  gulp.watch('src/scripts.js').on('change', reload)
 })
