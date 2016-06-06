@@ -122,6 +122,7 @@ var Game = function () {
 			if (this.checkWin(this.board)) {
 				this.inPlay = false;
 				this.determineWinner();
+				this.gameOver();
 			} else {
 				this.switchPlayers();
 			}
@@ -166,6 +167,20 @@ var Game = function () {
 		key: "determineWinner",
 		value: function determineWinner() {
 			this.winner = this.currentPlayer;
+		}
+	}, {
+		key: "gameOver",
+		value: function gameOver() {
+			var text = void 0;
+
+			if (this.winner) {
+				text = "you win!";
+			} else {
+				text = "you lose!";
+			}
+
+			$(".winner-phrase").html(text);
+			$("#game-over").show();
 		}
 	}]);
 

@@ -111,6 +111,7 @@ class Game {
 		if (this.checkWin(this.board)) {
 			this.inPlay = false;
 			this.determineWinner();
+			this.gameOver();
 		} else {
 			this.switchPlayers();
 		}
@@ -151,6 +152,19 @@ class Game {
 	
 	determineWinner() {
 		this.winner = this.currentPlayer;
+	}
+	
+	gameOver() {
+		let text;
+		
+		if (this.winner) {
+			text = "you win!";
+		} else {
+			text = "you lose!";
+		}
+		
+		$(".winner-phrase").html(text);
+		$("#game-over").show();
 	}
 }
 
