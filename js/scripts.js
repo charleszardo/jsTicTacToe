@@ -28,7 +28,7 @@ var game = {
 			if (that.currentPlayer === that.humanSym &&
 				  that.board[coords[0]][coords[1]] === null) {
 					  that.move(this.id, that.humanSym);
-						that.switchPlayers();
+						that.roundOver();
 				}
 		})
 	},
@@ -53,7 +53,7 @@ var game = {
  		}
 		
 		this.move(selection, this.computerSym);
-		this.switchPlayers();
+		this.roundOver();
 	},
 	move: function(loc, symbol) {
 		var row = Math.floor(loc/3),
@@ -87,7 +87,44 @@ var game = {
 		} else {
 			this.currentPlayer = 1;
 		}
+	},
+	roundOver: function () {
+		console.log(this.checkWin(this.board));
+		
+		this.switchPlayers();
+	},
+	checkWin: function (board) {
+		var cols = [[], [], []],
+				diag = [[board[0][0], board[1][1], board[2][2]],
+							  [board[0][2], board[1][1], board[2][0]]],
+				win = false,
+		    that = this,
+				remaining;
+		board.forEach(function(row) {
+			if (that.winningSet(row)) {
+				win = true;
+			} else {
+				[0, 1, 2].forEach(function(idx) {
+					cols[idx].push(row[idx]);
+				})
+			}
+		})
+
+		if (!win) {
+			remaining = cols.concat(diag);
+			remaining.forEach(function(set) {
+				if (that.winningSet(set)) {
+					win = true;
+				}
+			})
+		}
+
+		return win;
+	},
+  winningSet: function(set) {
+		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
+	
 }
 
 
@@ -120,38 +157,38 @@ $(document).ready(function(){
 
 	
 
-	function printBoard(board) {
-		var str = ""
-		for (var i=0; i < board.length; i++) {
-			for (var j=0; j < board.length; j++) {
-				var val = board[i][j];
-				str += val;
-			}
-			str += " | ";
-		}
-		console.log(str);
-	}
-
-	function smartMove(board, simPlayer, basePlayer) {
-		printBoard(board);
-		for (var i=0; i < board.length; i++) {
-			for (var j=0; j < board.length; j++) {
-				if (!board[i][j]) {
-					board[i][j] = simPlayer;
-					if (win(board)) {
-						if (winner(board) == basePlayer) {
-							return [i, j]
-						} else {
-							// losing position, do nothing
-						}
-					} else {
-						var nextPlayer = switchPlayers(simPlayer);
-						smartMove(board, nextPlayer, basePlayer);
-					}
-				}
-			}
-		}
-	}
+	// function printBoard(board) {
+	// 	var str = ""
+	// 	for (var i=0; i < board.length; i++) {
+	// 		for (var j=0; j < board.length; j++) {
+	// 			var val = board[i][j];
+	// 			str += val;
+	// 		}
+	// 		str += " | ";
+	// 	}
+	// 	console.log(str);
+	// }
+	//
+	// function smartMove(board, simPlayer, basePlayer) {
+	// 	printBoard(board);
+	// 	for (var i=0; i < board.length; i++) {
+	// 		for (var j=0; j < board.length; j++) {
+	// 			if (!board[i][j]) {
+	// 				board[i][j] = simPlayer;
+	// 				if (win(board)) {
+	// 					if (winner(board) == basePlayer) {
+	// 						return [i, j]
+	// 					} else {
+	// 						// losing position, do nothing
+	// 					}
+	// 				} else {
+	// 					var nextPlayer = switchPlayers(simPlayer);
+	// 					smartMove(board, nextPlayer, basePlayer);
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	function coordsToNum(coords) {
 		var x = coords[0],
@@ -160,37 +197,8 @@ $(document).ready(function(){
 		return x * 3 + y;
 	}
 
-	function win(board) {
-		var cols = [[], [], []],
-				diag = [[board[0][0], board[1][1], board[2][2]],
-							  [board[0][2], board[1][1], board[2][0]]],
-				 win = false,
-				 remaining;
-		board.forEach(function(row) {
-			if (winningSet(row)) {
-				win = true;
-			} else {
-				[0, 1, 2].forEach(function(idx) {
-					cols[idx].push(row[idx]);
-				})
-			}
-		})
+	
 
-		if (!win) {
-			remaining = cols.concat(diag);
-			remaining.forEach(function(set) {
-				if (winningSet(set)) {
-					win = true;
-				}
-			})
-		}
-
-		return win;
-	}
-
-	function winningSet(set) {
-		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
-	}
 
 	function winner(board) {
 		return currentPlayer;
