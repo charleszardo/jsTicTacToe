@@ -1,4 +1,4 @@
-var game = {
+let game = {
 	computerSym: 0,
 	humanSym: 1,
 	currentPlayer: null,
@@ -20,12 +20,12 @@ var game = {
 		}
 	},
 	initPadHandler: function () {
-		var that = this;
+		const that = this;
 		
 		this.handler = true;
 		
 		$(".square").click(function () {
-			var coords = that.numToCoords(this.id)
+			const coords = that.numToCoords(this.id)
 			
 			if (that.inPlay &&
 				  that.currentPlayer === that.humanSym &&
@@ -36,16 +36,17 @@ var game = {
 		})
 	},
 	numToCoords: function(num) {
-		var x = Math.floor(num/3),e
-		    y = num % 3;
+		const x = Math.floor(num/3),
+		      y = num % 3;
 
 		return [x,y];
 	},
 	computerTurn: function () {
-		var selection = null,
-		    that = this,
+		let selection = null,
 		    x,
 		    y;
+				
+		const that = this;
 
 		while (selection === null) {
 			x = Math.floor(Math.random() * 3);
@@ -62,14 +63,14 @@ var game = {
 		}, 1000);
 	},
 	move: function(loc, symbol) {
-		var row = Math.floor(loc/3),
-			 cell = loc % 3;
+		const row = Math.floor(loc/3),
+			   cell = loc % 3;
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
 	},
 	updateDisplay: function () {
-		var i,
+		let i,
 		    j,
 		    square,
 		    symbol,
@@ -103,12 +104,14 @@ var game = {
 		}
 	},
 	checkWin: function (board) {
-		var cols = [[], [], []],
+		let cols = [[], [], []],
 				diag = [[board[0][0], board[1][1], board[2][2]],
 							  [board[0][2], board[1][1], board[2][0]]],
 				win = false,
-		    that = this,
 				remaining;
+				
+		const that = this;
+		
 		board.forEach(function(row) {
 			if (that.winningSet(row)) {
 				win = true;

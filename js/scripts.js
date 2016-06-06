@@ -35,16 +35,16 @@ var game = {
 	},
 	numToCoords: function numToCoords(num) {
 		var x = Math.floor(num / 3),
-		    e;
-		y = num % 3;
+		    y = num % 3;
 
 		return [x, y];
 	},
 	computerTurn: function computerTurn() {
 		var selection = null,
-		    that = this,
-		    x,
-		    y;
+		    x = void 0,
+		    y = void 0;
+
+		var that = this;
 
 		while (selection === null) {
 			x = Math.floor(Math.random() * 3);
@@ -68,7 +68,11 @@ var game = {
 		this.updateDisplay();
 	},
 	updateDisplay: function updateDisplay() {
-		var i, j, square, symbol, color;
+		var i = void 0,
+		    j = void 0,
+		    square = void 0,
+		    symbol = void 0,
+		    color = void 0;
 
 		for (i = 0; i < this.board.length; i++) {
 			for (j = 0; j < this.board.length; j++) {
@@ -99,8 +103,10 @@ var game = {
 		var cols = [[], [], []],
 		    diag = [[board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]],
 		    win = false,
-		    that = this,
-		    remaining;
+		    remaining = void 0;
+
+		var that = this;
+
 		board.forEach(function (row) {
 			if (that.winningSet(row)) {
 				win = true;
