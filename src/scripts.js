@@ -189,6 +189,14 @@ class Game {
 		$(".winner-phrase").html(text);
 		$("#game-over").show();
 	}
+	
+	smartMove(player, board) {
+		
+	}
+
+	dupBoard(board) {
+		return $.extend(true, [], board);
+	}
 }
 
 $(document).ready(() => new Game().init());
