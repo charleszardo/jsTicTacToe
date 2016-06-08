@@ -8,39 +8,15 @@ class Game {
 									[null, null, null]];
 		this.colors = {0: "blue", 1: "red"};
 		this.inPlay = false;
-	  this.handler = false;
 		this.winner = null;
 	}
 	
 	init() {
-		this.boardFull();
-		if (!this.handler) {
-			this.initClickHandler();
-		}
-		
 		this.inPlay = true;
 		this.currentPlayer = Math.floor(Math.random() * 2);
 		if (this.currentPlayer === this.computerSym) {
 			this.computerTurn();
 		}
-	}
-	
-	initClickHandler() {
-		const that = this;
-		
-		this.handler = true;
-		
-		$(".square").click(_square => {
-			const square = _square.toElement.id,
-			      coords = that.numToCoords(square);
-			
-			if (that.inPlay &&
-						that.currentPlayer === that.humanSym &&
-						that.board[coords[0]][coords[1]] === null) {
-							that.move(square, that.humanSym);
-							that.roundOver();
-					}
-		});
 	}
 	
 	numToCoords(num) {
@@ -199,4 +175,43 @@ class Game {
 	}
 }
 
-$(document).ready(() => new Game().init());
+class Player {
+	constructor() {
+		this.handler = false;
+	}
+	
+	init() {
+		if (!this.handler) {
+			this.initClickHandler();
+		}
+	}
+	
+	addToGame(game) {
+		this.game = game;
+	}
+	
+	initClickHandler() {
+		const that = this;
+		
+		this.handler = true;
+		
+		$(".square").click(_square => {
+			const square = _square.toElement.id,
+			      coords = that.numToCoords(square);
+			
+			if (that.inPlay &&
+						that.currentPlayer === that.humanSym &&
+						that.board[coords[0]][coords[1]] === null) {
+							that.move(square, that.humanSym);
+							that.roundOver();
+					}
+		});
+	}
+}
+
+$(document).ready(() => {
+	let g = new Game();
+  let p = new Player();
+	p.init();
+	// g.init();
+});
