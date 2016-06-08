@@ -19,13 +19,6 @@ class Game {
 		}
 	}
 	
-	numToCoords(num) {
-		const x = Math.floor(num/3),
-					y = num % 3;
-
-		return [x,y];
-	}
-	
 	computerTurn() {
 		let selection = null,
 				x,
@@ -178,6 +171,7 @@ class Game {
 class Player {
 	constructor() {
 		this.handler = false;
+		this.game;
 	}
 	
 	init() {
@@ -191,7 +185,8 @@ class Player {
 	}
 	
 	initClickHandler() {
-		const that = this;
+		const that = this,
+					game = this.game;
 		
 		this.handler = true;
 		
@@ -199,19 +194,28 @@ class Player {
 			const square = _square.toElement.id,
 			      coords = that.numToCoords(square);
 			
-			if (that.inPlay &&
-						that.currentPlayer === that.humanSym &&
-						that.board[coords[0]][coords[1]] === null) {
-							that.move(square, that.humanSym);
-							that.roundOver();
-					}
-		});
+			if (game &&
+				  game.inPlay &&
+					game.currentPlayer === game.humanSym &&
+					game.board[coords[0]][coords[1]] === null) {
+							game.move(square, game.humanSym);
+							game.roundOver();
+						}
+			});
+	}
+	
+	numToCoords(num) {
+		const x = Math.floor(num/3),
+					y = num % 3;
+
+		return [x,y];
 	}
 }
 
 $(document).ready(() => {
 	let g = new Game();
   let p = new Player();
+	p.addToGame(g);
 	p.init();
-	// g.init();
+	g.init();
 });
