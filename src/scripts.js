@@ -1,3 +1,50 @@
+class Board {
+	constructor() {
+		this.grid = [[null, null, null],
+								 [null, null, null],
+								 [null, null, null]];
+		this.colors = {0: "blue", 1: "red"};
+		this.el = $(".board");
+	}
+	
+	updateDisplay() {
+		let i,
+				j,
+				square,
+				symbol,
+				color;
+		
+		for (i = 0; i < this.grid.length; i++) {
+			for (j = 0; j < this.grid.length; j++) {
+				if (this.grid[i][j] !== null) {
+					square = "#" + (i * 3 + j),
+					symbol = this.grid[i][j],
+					color = this.colors[symbol];
+					$(square).css('background-color', color)
+				}
+			}
+		}
+	}
+	
+	boardFull() {
+		let full = true;
+		
+		this.grid.forEach(row => {
+			row.forEach(cell => {
+				if (!cell) {
+					full = false;
+				}
+			})
+		})
+		
+		return full;
+	}
+	
+	dupBoard(board) {
+		return $.extend(true, [], board);
+	}
+}
+
 class Game {
 	constructor(player1, player2) {
 		this.player1 = player1;
@@ -5,10 +52,6 @@ class Game {
 		this.computerSym = 0;
 		this.humanSym = 1;
 		this.currentPlayer = null;
-		this.board = [[null, null, null],
-									[null, null, null],
-									[null, null, null]];
-		this.colors = {0: "blue", 1: "red"};
 		this.inPlay = false;
 		this.winner = null;
 	}
@@ -37,25 +80,6 @@ class Game {
 
 		this.board[row][cell] = symbol;
 		this.updateDisplay();
-	}
-	
-	updateDisplay() {
-		let i,
-				j,
-				square,
-				symbol,
-				color;
-		
-		for (i = 0; i < this.board.length; i++) {
-			for (j = 0; j < this.board.length; j++) {
-				if (this.board[i][j] !== null) {
-					square = "#" + (i * 3 + j),
-					symbol = this.board[i][j],
-					color = this.colors[symbol];
-					$(square).css('background-color', color)
-				}
-			}
-		}
 	}
 	
 	switchPlayers() {
@@ -110,20 +134,6 @@ class Game {
 		return win;
 	}
 	
-	boardFull() {
-		let full = true;
-		
-		this.board.forEach(row => {
-			row.forEach(cell => {
-				if (!cell) {
-					full = false;
-				}
-			})
-		})
-		
-		return full;
-	}
-	
   winningSet(set) {
 		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
@@ -151,10 +161,6 @@ class Game {
 	
 	smartMove(player, board) {
 		
-	}
-
-	dupBoard(board) {
-		return $.extend(true, [], board);
 	}
 }
 
