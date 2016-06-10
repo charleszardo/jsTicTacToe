@@ -167,15 +167,15 @@ class Player {
 	}
 	
 	initClickHandler() {
-		const that = this,
-					game = this.game;
+		const that = this;
 		
 		this.handler = true;
 		
 		$(".square").click(_square => {
 			const square = _square.toElement.id,
-			      coords = that.numToCoords(square);
-			
+						coords = that.numToCoords(square),
+						game = that.game;
+						
 			if (game &&
 				  game.inPlay &&
 					game.currentPlayer === game.humanSym &&
