@@ -109,12 +109,12 @@ class Game {
 	}
 	
 	switchPlayers() {
-		if (this.currentPlayer === 1) {
-			this.currentPlayer = 0;
-			this.player2.move();
+		if (this.currentPlayer === this.player1) {
+			this.currentPlayer = this.player2;
 		} else {
-			this.currentPlayer = 1;
+			this.currentPlayer = this.player1;
 		}
+		this.currentPlayer.move();
 	}
 	
 	roundOver() {
@@ -174,10 +174,10 @@ class Game {
 	gameOver() {
 		let text;
 		
-		if (this.winner === 1) {
-			text = "you win!";
-		} else if (this.winner === 0) {
-			text = "you lose!";
+		if (this.winner === this.player1) {
+			text = "player 1 wins!";
+		} else if (this.winner === this.player2) {
+			text = "player 2 wins!";
 		} else {
 			text = "draw!";
 		}
@@ -216,6 +216,7 @@ class Game {
 class Player {
 	constructor() {
 		this.handler = false;
+		this.myTurn = false;
 		this.game;
 	}
 	
@@ -238,12 +239,13 @@ class Player {
 			const square = _square.toElement.id,
 						coords = that.numToCoords(square),
 						game = that.game;
-						
+
 			if (game &&
 				  game.inPlay &&
-					game.currentPlayer === game.humanSym &&
+				  this.myTurn &&
 					game.board.grid[coords[0]][coords[1]] === null) {
 							game.move(square, game.humanSym);
+							this.myTurn = false;
 							game.roundOver();
 						}
 			});
@@ -257,7 +259,7 @@ class Player {
 	}
 	
 	move() {
-		
+		this.myTurn = true;
 	}
 }
 
