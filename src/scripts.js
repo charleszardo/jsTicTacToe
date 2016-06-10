@@ -19,28 +19,6 @@ class Game {
 		}
 	}
 	
-	computerTurn() {
-		let selection = null,
-				x,
-				y;
-				
-		const that = this;
-
-		while (selection === null) {
-			x = Math.floor(Math.random() * 3);
-		  y = Math.floor(Math.random() * 3);
-
-			if (this.board[x][y] === null) {
-				selection = x * 3 + y;
-			}
- 		}
-		
-		setTimeout(() => {
-			that.move(selection, that.computerSym);
-			that.roundOver();
-		}, 1000);
-	}
-	
 	move(loc, symbol) {
 		const row = Math.floor(loc/3),
 					cell = loc % 3;
@@ -212,10 +190,47 @@ class Player {
 	}
 }
 
+class ComputerPlayer {
+	constructor() {
+		this.game;
+	}
+	
+	addToGame(game) {
+		this.game = game;
+	}
+	
+	selectMove() {
+		return [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
+	}
+	
+	computerTurn() {
+		let selection = null,
+				x,
+				y;
+				
+		const that = this;
+
+		// while (selection === null) {
+		// 	x = Math.floor(Math.random() * 3);
+		//   y = Math.floor(Math.random() * 3);
+		//
+		// 	if (this.board[x][y] === null) {
+		// 		selection = x * 3 + y;
+		// 	}
+		//  		}
+		//
+		// setTimeout(() => {
+		// 	that.move(selection, that.computerSym);
+		// 	that.roundOver();
+		// }, 1000);
+	}
+}
+
 $(document).ready(() => {
 	let g = new Game();
   let p = new Player();
+	let c = new ComputerPlayer();
 	p.addToGame(g);
 	p.init();
-	g.init();
+	// g.init();
 });
