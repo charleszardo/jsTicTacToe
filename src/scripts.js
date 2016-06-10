@@ -26,7 +26,7 @@ class Board {
 		}
 	}
 	
-	boardFull() {
+	isFull() {
 		let full = true;
 		
 		this.grid.forEach(row => {
@@ -46,9 +46,10 @@ class Board {
 }
 
 class Game {
-	constructor(player1, player2) {
+	constructor(player1, player2, board) {
 		this.player1 = player1;
 		this.player2 = player2;
+		this.board = board;
 		this.computerSym = 0;
 		this.humanSym = 1;
 		this.currentPlayer = null;
@@ -78,8 +79,8 @@ class Game {
 		const row = Math.floor(loc/3),
 					cell = loc % 3;
 
-		this.board[row][cell] = symbol;
-		this.updateDisplay();
+		this.board.grid[row][cell] = symbol;
+		this.board.updateDisplay();
 	}
 	
 	switchPlayers() {
@@ -92,11 +93,11 @@ class Game {
 	}
 	
 	roundOver() {
-		if (this.checkWin(this.board)) {
+		if (this.checkWin(this.board.grid)) {
 			this.inPlay = false;
 			this.determineWinner();
 			this.gameOver();
-		} else if (this.boardFull()) {
+		} else if (this.board.isFull()) {
 			this.determineWinner(true);
 			this.gameOver();
 		}
@@ -193,7 +194,7 @@ class Player {
 			if (game &&
 				  game.inPlay &&
 					game.currentPlayer === game.humanSym &&
-					game.board[coords[0]][coords[1]] === null) {
+					game.board.grid[coords[0]][coords[1]] === null) {
 							game.move(square, game.humanSym);
 							game.roundOver();
 						}
@@ -235,7 +236,7 @@ class ComputerPlayer {
 		while (selection === null) {
 			[x, y] = this.selectMove();
 
-			if (this.game.board[x][y] === null) {
+			if (this.game.board.grid[x][y] === null) {
 				selection = x * 3 + y;
 			}
 		}
@@ -248,9 +249,10 @@ class ComputerPlayer {
 }
 
 $(document).ready(() => {
+	let b = new Board();
   let p = new Player();
 	let c = new ComputerPlayer();
-	let g = new Game(p, c);
+	let g = new Game(p, c, b);
 	p.init();
 	g.init();
 });
