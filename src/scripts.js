@@ -53,7 +53,7 @@ class Game {
 	switchPlayers() {
 		if (this.currentPlayer === 1) {
 			this.currentPlayer = 0;
-			this.computerTurn();
+			this.player2.computerTurn();
 		} else {
 			this.currentPlayer = 1;
 		}
