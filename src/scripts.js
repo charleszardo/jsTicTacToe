@@ -43,6 +43,14 @@ class Board {
 	dupBoard(board) {
 		return $.extend(true, [], board);
 	}
+	
+	hide() {
+		this.el.hide();
+	}
+	
+	show() {
+		this.el.show();
+	}
 }
 
 class Game {
@@ -157,7 +165,8 @@ class Game {
 		}
 		
 		$(".winner-phrase").html(text);
-		$("#game-over").show();
+		this.board.hide();
+		$(".game-over").show();
 	}
 	
 	smartMove(player, board) {
