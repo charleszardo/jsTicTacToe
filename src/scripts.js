@@ -61,7 +61,7 @@ class Game {
 	switchPlayers() {
 		if (this.currentPlayer === 1) {
 			this.currentPlayer = 0;
-			this.player2.computerTurn();
+			this.player2.move();
 		} else {
 			this.currentPlayer = 1;
 		}
@@ -200,6 +200,10 @@ class Player {
 
 		return [x,y];
 	}
+	
+	move() {
+		
+	}
 }
 
 class ComputerPlayer {
@@ -215,7 +219,7 @@ class ComputerPlayer {
 		return [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
 	}
 	
-	computerTurn() {
+	move() {
 		let selection = null,
 				x,
 				y;
