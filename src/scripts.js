@@ -1,5 +1,7 @@
 class Game {
-	constructor() {
+	constructor(player1, player2) {
+		this.player1 = player1;
+		this.player2 = player2;
 		this.computerSym = 0;
 		this.humanSym = 1;
 		this.currentPlayer = null;
@@ -12,10 +14,12 @@ class Game {
 	}
 	
 	init() {
+		this.player1.addToGame(this);
+		this.player2.addToGame(this);
 		this.inPlay = true;
 		this.currentPlayer = Math.floor(Math.random() * 2);
 		if (this.currentPlayer === this.computerSym) {
-			this.computerTurn();
+			this.player2.computerTurn();
 		}
 	}
 	
@@ -210,27 +214,25 @@ class ComputerPlayer {
 				
 		const that = this;
 
-		// while (selection === null) {
-		// 	x = Math.floor(Math.random() * 3);
-		//   y = Math.floor(Math.random() * 3);
-		//
-		// 	if (this.board[x][y] === null) {
-		// 		selection = x * 3 + y;
-		// 	}
-		//  		}
-		//
-		// setTimeout(() => {
-		// 	that.move(selection, that.computerSym);
-		// 	that.roundOver();
-		// }, 1000);
+		while (selection === null) {
+			[x, y] = this.selectMove();
+
+			if (this.game.board[x][y] === null) {
+				selection = x * 3 + y;
+			}
+		}
+
+		setTimeout(() => {
+			that.game.move(selection, that.game.computerSym);
+			that.game.roundOver();
+		}, 1000);
 	}
 }
 
 $(document).ready(() => {
-	let g = new Game();
   let p = new Player();
 	let c = new ComputerPlayer();
-	p.addToGame(g);
+	let g = new Game(p, c);
 	p.init();
-	// g.init();
+	g.init();
 });
