@@ -7,9 +7,6 @@ body {
 	text-align: center;
 }
 
-.row {
-}
-
 .square {
 	display: inline-block;
 	border: 1px solid #FFF;
@@ -17,4 +14,9 @@ body {
 	width: 100px;
 	color: #FFF;
 	line-height: 20px;
+}
+
+.game-over {
+	color: #FFF;
+	font-size: 100px;
 }
