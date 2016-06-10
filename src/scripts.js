@@ -51,6 +51,21 @@ class Board {
 	show() {
 		this.el.show();
 	}
+	
+	resetDisplay() {
+		$(".square").each(function(sq) {
+			$(this).css("background-color", "");
+		});
+	}
+	
+	reset() {
+		this.grid = [[null, null, null],
+								 [null, null, null],
+								 [null, null, null]];
+		this.resetDisplay();
+		this.updateDisplay();
+		this.show();
+	}
 }
 
 class Game {
@@ -63,6 +78,7 @@ class Game {
 		this.currentPlayer = null;
 		this.inPlay = false;
 		this.winner = null;
+		this.handlers = false;
 	}
 	
 	init() {
@@ -70,6 +86,7 @@ class Game {
 		this.player2.addToGame(this);
 		this.inPlay = true;
 		this.determineInitPlayer();
+		this.initHandlers();
 		this.currentPlayer.move();
 	}
 	
@@ -106,6 +123,7 @@ class Game {
 			this.determineWinner();
 			this.gameOver();
 		} else if (this.board.isFull()) {
+			this.inPlay = false;
 			this.determineWinner(true);
 			this.gameOver();
 		}
@@ -171,6 +189,27 @@ class Game {
 	
 	smartMove(player, board) {
 		
+	}
+	
+	initHandlers() {
+		const that = this;
+		
+		this.handlers = true;
+		
+		$(".play-again").click(_button => {
+			if (!that.inPlay) {
+				that.reset();
+			}
+		});
+	}
+	
+	reset() {
+		$(".game-over").hide();
+		this.board.reset();
+		this.winner = null;
+		this.inPlay = true;
+		this.determineInitPlayer();
+		this.currentPlayer.move();
 	}
 }
 
