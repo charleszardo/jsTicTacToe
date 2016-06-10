@@ -17,9 +17,17 @@ class Game {
 		this.player1.addToGame(this);
 		this.player2.addToGame(this);
 		this.inPlay = true;
-		this.currentPlayer = Math.floor(Math.random() * 2);
-		if (this.currentPlayer === this.computerSym) {
-			this.player2.computerTurn();
+		this.determineInitPlayer();
+		this.currentPlayer.move();
+	}
+	
+	determineInitPlayer() {
+		let coin = Math.floor(Math.random() * 2);
+		
+		if (coin) {
+			this.currentPlayer = this.player1;
+		} else {
+			this.currentPlayer = this.player2;
 		}
 	}
 	
