@@ -3,7 +3,6 @@ class Board {
 		this.grid = [[null, null, null],
 								 [null, null, null],
 								 [null, null, null]];
-		this.colors = {0: "blue", 1: "red"};
 		this.el = $(".board");
 	}
 	
@@ -77,11 +76,12 @@ class Game {
 		this.inPlay = false;
 		this.winner = null;
 		this.handlers = false;
+		this.colors = ["blue", "red"]
 	}
 	
 	init() {
-		this.player1.addToGame(this, "blue");
-		this.player2.addToGame(this, "red");
+		this.player1.addToGame(this, this.colors[0]);
+		this.player2.addToGame(this, this.colors[1]);
 		this.inPlay = true;
 		this.determineInitPlayer();
 		this.initHandlers();
@@ -101,10 +101,11 @@ class Game {
 	move(loc, symbol) {
 		const row = Math.floor(loc/3),
 					cell = loc % 3;
+
 		this.board.grid[row][cell] = symbol;
-		this.board.updateDisplay();
+		this.boarddsssd.updateDisplay();
 	}
-	
+
 	switchPlayers() {
 		if (this.currentPlayer === this.player1) {
 			this.currentPlayer = this.player2;
@@ -123,8 +124,7 @@ class Game {
 			this.inPlay = false;
 			this.determineWinner(true);
 			this.gameOver();
-		}
-			else {
+		} else {
 			this.switchPlayers();
 		}
 	}
@@ -182,10 +182,6 @@ class Game {
 		$(".winner-phrase").html(text);
 		this.board.hide();
 		$(".game-over").show();
-	}
-	
-	smartMove(player, board) {
-		
 	}
 	
 	initHandlers() {
