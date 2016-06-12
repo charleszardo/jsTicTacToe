@@ -31,7 +31,7 @@ class Board {
 		
 		this.grid.forEach(row => {
 			row.forEach(cell => {
-				if (!cell) {
+				if (cell === null) {
 					full = false;
 				}
 			})
@@ -103,7 +103,6 @@ class Game {
 	move(loc, symbol) {
 		const row = Math.floor(loc/3),
 					cell = loc % 3;
-
 		this.board.grid[row][cell] = symbol;
 		this.board.updateDisplay();
 	}
