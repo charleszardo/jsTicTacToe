@@ -11,16 +11,16 @@ class Board {
 		let i,
 				j,
 				square,
-				symbol,
+				player,
 				color;
 		
 		for (i = 0; i < this.grid.length; i++) {
 			for (j = 0; j < this.grid.length; j++) {
 				if (this.grid[i][j] !== null) {
-					square = "#" + (i * 3 + j),
-					symbol = this.grid[i][j],
-					color = this.colors[symbol];
-					$(square).css('background-color', color)
+					square = "#" + (i * 3 + j);
+					player = this.grid[i][j];
+					color = player.color;
+					$(square).css('background-color', color);
 				}
 			}
 		}
@@ -73,8 +73,6 @@ class Game {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.board = board;
-		this.computerSym = 0;
-		this.humanSym = 1;
 		this.currentPlayer = null;
 		this.inPlay = false;
 		this.winner = null;
@@ -82,8 +80,8 @@ class Game {
 	}
 	
 	init() {
-		this.player1.addToGame(this);
-		this.player2.addToGame(this);
+		this.player1.addToGame(this, "blue");
+		this.player2.addToGame(this, "red");
 		this.inPlay = true;
 		this.determineInitPlayer();
 		this.initHandlers();
@@ -217,6 +215,7 @@ class Player {
 		this.handler = false;
 		this.myTurn = false;
 		this.game;
+		this.color;
 	}
 	
 	init() {
@@ -225,8 +224,9 @@ class Player {
 		}
 	}
 	
-	addToGame(game) {
-		this.game = game;
+	addToGame(_game, _color) {
+		this.game = _game;
+		this.color = _color;
 	}
 	
 	initClickHandler() {
@@ -243,7 +243,7 @@ class Player {
 				  game.inPlay &&
 				  this.myTurn &&
 					game.board.grid[coords[0]][coords[1]] === null) {
-							game.move(square, game.humanSym);
+							game.move(square, game.currentPlayer);
 							this.myTurn = false;
 							game.roundOver();
 						}
@@ -265,10 +265,12 @@ class Player {
 class ComputerPlayer {
 	constructor() {
 		this.game;
+		this.color;
 	}
 	
-	addToGame(game) {
-		this.game = game;
+	addToGame(_game, _color) {
+		this.game = _game;
+		this.color = _color;
 	}
 	
 	selectMove() {
@@ -291,7 +293,7 @@ class ComputerPlayer {
 		}
 
 		setTimeout(() => {
-			that.game.move(selection, that.game.computerSym);
+			that.game.move(selection, that.game.currentPlayer);
 			that.game.roundOver();
 		}, 1000);
 	}
