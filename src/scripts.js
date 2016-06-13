@@ -103,7 +103,7 @@ class Game {
 					cell = loc % 3;
 
 		this.board.grid[row][cell] = symbol;
-		this.boarddsssd.updateDisplay();
+		this.board.updateDisplay();
 	}
 
 	switchPlayers() {
@@ -292,6 +292,16 @@ class ComputerPlayer {
 			that.game.move(selection, that.game.currentPlayer);
 			that.game.roundOver();
 		}, 1000);
+	}
+	
+	smartMove(_player1, _player2, _board) {
+		let player1 = _player1,
+			  player2 = _player1,
+					board = _board;
+		
+		this.game.board.grid.forEach(row => {
+			
+		})
 	}
 }
 
