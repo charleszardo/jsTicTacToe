@@ -304,18 +304,50 @@ class ComputerPlayer {
 							i,
 							j;
 							
+		function toggleCurrentPlayer() {
+			if (currentPlayer === player1) {
+				return player2;
+			} else {
+				return player1;
+			}
+		}
+							
 		for (i = 0; i < board.grid.length; i++) {
 			for (j = 0; j < board.grid.length; j++) {
 				if (board.grid[i][j] === null) {
 					let boardDup = board.dupBoard(),
-							 gameDup = new Game();
+							gameDup = new Game(),
+							newCurrentPlayer,
+							pathObjs;
+
 					boardDup.grid[i][j] = currentPlayer;
 					gameDup.board = boardDup;
 					if (gameDup.checkWin(boardDup.grid)) {
+						console.log("win!")
 						return { sequence: [[i, j]],
 						           winner: currentPlayer
-						       }
-					} else if (boardDup.isFull()) {}
+						       };
+					} else if (boardDup.isFull()) {
+						console.log("tie!")
+						return { sequence: [[i, j]],
+											 winner: null
+									 };
+					} else {
+						newCurrentPlayer = toggleCurrentPlayer();
+						pathObjs = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
+						console.log(pathObjs);
+						pathObjs.forEach(obj => {
+							obj.sequence.push([i,j]);
+						})
+						console.log(pathObjs);
+						return pathObjs;
+						// pathObj = { sequence: [[i, j]],
+						// 					 winner: null
+						// 			 };
+						// 			 console.log(pathObj.sequence);
+						// 			 pathObj.sequence.push([i,j])
+						// 			 console.log(pathObj.sequence);
+					}
 				}
 			}
 		}					
@@ -327,7 +359,7 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
-	// c.smartMove(p, c, b, c);
-	p.init();
-	g.init();
+	c.smartMove(p, c, b, c);
+	// p.init();
+	// g.init();
 });
