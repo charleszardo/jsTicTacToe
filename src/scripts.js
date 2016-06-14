@@ -297,10 +297,12 @@ class ComputerPlayer {
 	}
 	
 	smartMove(_player1, _player2, _board, _currentPlayer) {
+		console.log(_board.grid);
 		let player1 = _player1,
 			  player2 = _player1,
 					board = _board,
 	currentPlayer = _currentPlayer,
+			 allPaths = [],
 							i,
 							j;
 							
@@ -314,6 +316,8 @@ class ComputerPlayer {
 							
 		for (i = 0; i < board.grid.length; i++) {
 			for (j = 0; j < board.grid.length; j++) {
+				let pathSet = []
+				
 				if (board.grid[i][j] === null) {
 					let boardDup = board.dupBoard(),
 							gameDup = new Game(),
@@ -324,23 +328,22 @@ class ComputerPlayer {
 					gameDup.board = boardDup;
 					if (gameDup.checkWin(boardDup.grid)) {
 						console.log("win!")
-						return { sequence: [[i, j]],
+						pathSet.push({ sequence: [[i, j]],
 						           winner: currentPlayer
-						       };
+						       });
 					} else if (boardDup.isFull()) {
 						console.log("tie!")
-						return { sequence: [[i, j]],
+						pathSet.push({ sequence: [[i, j]],
 											 winner: null
-									 };
+									 });
 					} else {
 						newCurrentPlayer = toggleCurrentPlayer();
 						pathObjs = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
-						console.log(pathObjs);
 						pathObjs.forEach(obj => {
+							console.log(obj);
 							obj.sequence.push([i,j]);
 						})
-						console.log(pathObjs);
-						return pathObjs;
+						pathSet.push(pathObjs);
 						// pathObj = { sequence: [[i, j]],
 						// 					 winner: null
 						// 			 };
@@ -349,8 +352,10 @@ class ComputerPlayer {
 						// 			 console.log(pathObj.sequence);
 					}
 				}
+				allPaths.push(pathSet);
 			}
-		}					
+		}
+		return allPaths;					
 	}
 }
 
