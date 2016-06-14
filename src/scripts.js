@@ -39,8 +39,10 @@ class Board {
 		return full;
 	}
 	
-	dupBoard(board) {
-		return $.extend(true, [], board);
+	dupBoard() {
+		let b = new Board();
+		b.grid = $.extend(true, [], this.grid);
+		return b;
 	}
 	
 	hide() {
@@ -52,8 +54,8 @@ class Board {
 	}
 	
 	resetDisplay() {
-		$(".square").each(function(sq) {
-			$(this).css("background-color", "");
+		$(".square").each(sq => {
+			$(`#${sq}`).css("background-color", "");
 		});
 	}
 	
@@ -294,14 +296,29 @@ class ComputerPlayer {
 		}, 1000);
 	}
 	
-	smartMove(_player1, _player2, _board) {
+	smartMove(_player1, _player2, _board, _currentPlayer) {
 		let player1 = _player1,
 			  player2 = _player1,
-					board = _board;
-		
-		this.game.board.grid.forEach(row => {
-			
-		})
+					board = _board,
+	currentPlayer = _currentPlayer,
+							i,
+							j;
+							
+		for (i = 0; i < board.grid.length; i++) {
+			for (j = 0; j < board.grid.length; j++) {
+				if (board.grid[i][j] === null) {
+					let boardDup = board.dupBoard(),
+							 gameDup = new Game();
+					boardDup.grid[i][j] = currentPlayer;
+					gameDup.board = boardDup;
+					if (gameDup.checkWin(boardDup.grid)) {
+						return { sequence: [[i, j]],
+						           winner: currentPlayer
+						       }
+					} else if (boardDup.isFull()) {}
+				}
+			}
+		}					
 	}
 }
 
@@ -310,6 +327,7 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
+	// c.smartMove(p, c, b, c);
 	p.init();
 	g.init();
 });
