@@ -297,7 +297,7 @@ class ComputerPlayer {
 	}
 	
 	smartMove(_player1, _player2, _board, _currentPlayer) {
-		console.log(_board.grid);
+		// console.log(_board.grid);
 		let player1 = _player1,
 			  player2 = _player1,
 					board = _board,
@@ -319,10 +319,11 @@ class ComputerPlayer {
 				let pathSet = []
 				
 				if (board.grid[i][j] === null) {
+					console.log([i,j])
 					let boardDup = board.dupBoard(),
 							gameDup = new Game(),
 							newCurrentPlayer,
-							pathObjs;
+							paths;
 
 					boardDup.grid[i][j] = currentPlayer;
 					gameDup.board = boardDup;
@@ -338,24 +339,28 @@ class ComputerPlayer {
 									 });
 					} else {
 						newCurrentPlayer = toggleCurrentPlayer();
-						pathObjs = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
-						pathObjs.forEach(obj => {
+						paths = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
+						paths = [].concat.apply([], paths);
+						console.log('paths:');
+						console.log(paths);
+						paths.forEach(obj => {
+							console.log('obj:');
 							console.log(obj);
 							obj.sequence.push([i,j]);
 						})
-						pathSet.push(pathObjs);
-						// pathObj = { sequence: [[i, j]],
-						// 					 winner: null
-						// 			 };
-						// 			 console.log(pathObj.sequence);
-						// 			 pathObj.sequence.push([i,j])
-						// 			 console.log(pathObj.sequence);
+						pathSet.push(paths);
 					}
+					pathSet = [].concat.apply([], pathSet);
+					console.log('pathSet:');
+					console.log(pathSet);
+					allPaths.push(pathSet);
 				}
-				allPaths.push(pathSet);
 			}
 		}
-		return allPaths;					
+		console.log('allPaths:');
+		console.log(allPaths);
+		allPaths = [].concat.apply([], allPaths);
+		return allPaths;
 	}
 }
 
@@ -364,6 +369,7 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
+	b.grid = [[p, c, c], [c, p, p], [null, null, null]];
 	c.smartMove(p, c, b, c);
 	// p.init();
 	// g.init();
