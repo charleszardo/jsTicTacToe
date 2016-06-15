@@ -297,6 +297,57 @@ class ComputerPlayer {
 	}
 	
 	smartMove(_player1, _player2, _board, _currentPlayer) {
+		let player1 = _player1,
+			  player2 = _player1,
+				board = _board,
+				winningMoves = [],
+				protectMoves = [],
+				safeMoves = [],
+				i,
+				j;
+				
+		for (i = 0; i < board.grid.length; i++) {
+			for (j = 0; j < board.grid.length; j++) {
+				if (board.grid[i][j] === null) {
+					let boardDup = board.dupBoard(),
+							gameDup = new Game();
+
+					boardDup.grid[i][j] = player1;
+					gameDup.board = boardDup;
+					
+					if (gameDup.checkWin(boardDup.grid)) {
+						console.log("win!")
+						pathSet.push({ sequence: [[i, j]],
+						           winner: currentPlayer
+						       });
+					} else if (boardDup.isFull()) {
+						console.log("tie!")
+						pathSet.push({ sequence: [[i, j]],
+											 winner: null
+									 });
+					} else {
+						newCurrentPlayer = toggleCurrentPlayer();
+						paths = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
+						paths = [].concat.apply([], paths);
+						console.log('paths:');
+						console.log(paths);
+						paths.forEach(obj => {
+							console.log('obj:');
+							console.log(obj);
+							obj.sequence.push([i,j]);
+						})
+						pathSet.push(paths);
+					}
+					pathSet = [].concat.apply([], pathSet);
+					console.log('pathSet:');
+					console.log(pathSet);
+					allPaths.push(pathSet);
+				}
+			}
+		}
+	}
+	
+	smartMove2(_player1, _player2, _board, _currentPlayer) {
 		// console.log(_board.grid);
 		let player1 = _player1,
 			  player2 = _player1,
