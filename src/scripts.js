@@ -82,8 +82,8 @@ class Game {
 	}
 	
 	init() {
-		this.player1.addToGame(this, this.colors[0]);
-		this.player2.addToGame(this, this.colors[1]);
+		this.player1.addToGame(this, this.colors[0], this.player2);
+		this.player2.addToGame(this, this.colors[1], this.player1);
 		this.inPlay = true;
 		this.determineInitPlayer();
 		this.initHandlers();
@@ -225,9 +225,10 @@ class Player {
 		}
 	}
 	
-	addToGame(_game, _color) {
+	addToGame(_game, _color, _opponent) {
 		this.game = _game;
 		this.color = _color;
+		this.opponent = _opponent;
 	}
 	
 	initClickHandler() {
@@ -269,49 +270,52 @@ class ComputerPlayer {
 		this.color;
 	}
 	
-	addToGame(_game, _color) {
+	addToGame(_game, _color, _opponent) {
 		this.game = _game;
+		this.board = _game.board;
 		this.color = _color;
+		this.opponent = _opponent;
 	}
 	
 	selectMove() {
 		return [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
 	}
 	
-	move() {
-		let selection = null,
-				x,
-				y;
-				
-		const that = this;
-
-		while (selection === null) {
-			[x, y] = this.selectMove();
-
-			if (this.game.board.grid[x][y] === null) {
-				selection = x * 3 + y;
-			}
-		}
-
-		setTimeout(() => {
-			that.game.move(selection, that.game.currentPlayer);
-			that.game.roundOver();
-		}, 1000);
-	}
+	// move() {
+	// 	let selection = null,
+	// 			x,
+	// 			y;
+	//
+	// 	const that = this;
+	//
+	// 	while (selection === null) {
+	// 		[x, y] = this.selectMove();
+	//
+	// 		if (this.game.board.grid[x][y] === null) {
+	// 			selection = x * 3 + y;
+	// 		}
+	// 	}
+	//
+	// 	setTimeout(() => {
+	// 		that.game.move(selection, that.game.currentPlayer);
+	// 		that.game.roundOver();
+	// 	}, 1000);
+	// }
 	
-	smartMove(_opponent, _board) {
-		let opponent = _opponent,
-				board = _board,
-				winningMoves = [],
+	move() {
+		let winningMoves = [],
 				protectMoves = [],
 				otherMoves = [],
+				that = this,
+				allMoves,
+				move,
 				i,
 				j;
 				
-		for (i = 0; i < board.grid.length; i++) {
-			for (j = 0; j < board.grid.length; j++) {
-				if (board.grid[i][j] === null) {
-					let boardDup = board.dupBoard(),
+		for (i = 0; i < this.board.grid.length; i++) {
+			for (j = 0; j < this.board.grid.length; j++) {
+				if (this.board.grid[i][j] === null) {
+					let boardDup = this.board.dupBoard(),
 							gameDup = new Game();
 					
 					boardDup.grid[i][j] = this;
@@ -321,9 +325,9 @@ class ComputerPlayer {
 						winningMoves.push([i, j]);
 					}
 					
-					boardDup.grid[i][j] = opponent;
+					boardDup.grid[i][j] = this.opponent;
 					
-					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === opponent) {
+					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this.opponent) {
 						protectMoves.push([i, j]);
 					} else {
 						otherMoves.push([i, j]);
@@ -332,7 +336,14 @@ class ComputerPlayer {
 			}
 		}
 		
-		return winningMoves.concat(protectMoves).concat(otherMoves);
+		allMoves = winningMoves.concat(protectMoves).concat(otherMoves);
+		move = allMoves[0];
+		move = move[0] * 3 + move[1];
+
+		setTimeout(() => {
+			that.game.move(move, that.game.currentPlayer);
+			that.game.roundOver();
+		}, 1000);
 	}
 	
 	smartMove2(_player1, _player2, _board, _currentPlayer) {
@@ -408,8 +419,8 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
-	b.grid = [[c, p, c], [c, p, c], [null, null, null]];
-	c.smartMove(p, b);
-	// p.init();
-	// g.init();
+	// b.grid = [[c, p, c], [c, p, c], [null, null, null]];
+	// c.smartMove(p, b);
+	p.init();
+	g.init();
 });
