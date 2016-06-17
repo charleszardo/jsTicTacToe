@@ -277,37 +277,11 @@ class ComputerPlayer {
 		this.opponent = _opponent;
 	}
 	
-	selectMove() {
-		return [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
-	}
-	
-	// move() {
-	// 	let selection = null,
-	// 			x,
-	// 			y;
-	//
-	// 	const that = this;
-	//
-	// 	while (selection === null) {
-	// 		[x, y] = this.selectMove();
-	//
-	// 		if (this.game.board.grid[x][y] === null) {
-	// 			selection = x * 3 + y;
-	// 		}
-	// 	}
-	//
-	// 	setTimeout(() => {
-	// 		that.game.move(selection, that.game.currentPlayer);
-	// 		that.game.roundOver();
-	// 	}, 1000);
-	// }
-	
 	move() {
 		let winningMoves = [],
 				protectMoves = [],
 				otherMoves = [],
 				that = this,
-				allMoves,
 				move,
 				i,
 				j;
@@ -336,8 +310,7 @@ class ComputerPlayer {
 			}
 		}
 		
-		allMoves = winningMoves.concat(protectMoves).concat(otherMoves);
-		move = allMoves[0];
+		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
 		move = move[0] * 3 + move[1];
 
 		setTimeout(() => {
@@ -419,8 +392,6 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
-	// b.grid = [[c, p, c], [c, p, c], [null, null, null]];
-	// c.smartMove(p, b);
 	p.init();
 	g.init();
 });
