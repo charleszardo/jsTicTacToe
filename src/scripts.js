@@ -304,7 +304,7 @@ class ComputerPlayer {
 				board = _board,
 				winningMoves = [],
 				protectMoves = [],
-				safeMoves = [],
+				otherMoves = [],
 				i,
 				j;
 				
@@ -317,15 +317,22 @@ class ComputerPlayer {
 					boardDup.grid[i][j] = this;
 					gameDup.board = boardDup;
 					
-					if (gameDup.checkWin(boardDup.grid)) {
-						
-					} else if (boardDup.isFull()) {
+					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this) {
+						winningMoves.push([i, j]);
+					}
+					
+					boardDup.grid[i][j] = opponent;
+					
+					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === opponent) {
+						protectMoves.push([i, j]);
 					} else {
-						
+						otherMoves.push([i, j]);
 					}
 				}
 			}
 		}
+		
+		return winningMoves.concat(protectMoves).concat(otherMoves);
 	}
 	
 	smartMove2(_player1, _player2, _board, _currentPlayer) {
@@ -401,7 +408,7 @@ $(document).ready(() => {
   let p = new Player();
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
-	b.grid = [[p, c, c], [c, p, p], [null, null, null]];
+	b.grid = [[c, p, c], [c, p, c], [null, null, null]];
 	c.smartMove(p, b);
 	// p.init();
 	// g.init();
