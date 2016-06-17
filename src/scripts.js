@@ -141,6 +141,7 @@ class Game {
 		const that = this;
 		
 		board.forEach(row => {
+			console.log(row);
 			if (that.winningSet(row)) {
 				win = true;
 			} else {
@@ -296,9 +297,8 @@ class ComputerPlayer {
 		}, 1000);
 	}
 	
-	smartMove(_player1, _player2, _board, _currentPlayer) {
-		let player1 = _player1,
-			  player2 = _player1,
+	smartMove(_otherPlayer, _board) {
+		let otherPlayer = _otherPlayer,
 				board = _board,
 				winningMoves = [],
 				protectMoves = [],
@@ -311,37 +311,18 @@ class ComputerPlayer {
 				if (board.grid[i][j] === null) {
 					let boardDup = board.dupBoard(),
 							gameDup = new Game();
-
-					boardDup.grid[i][j] = player1;
+					
+					boardDup.grid[i][j] = this;
 					gameDup.board = boardDup;
 					
 					if (gameDup.checkWin(boardDup.grid)) {
 						console.log("win!")
-						pathSet.push({ sequence: [[i, j]],
-						           winner: currentPlayer
-						       });
+						
 					} else if (boardDup.isFull()) {
 						console.log("tie!")
-						pathSet.push({ sequence: [[i, j]],
-											 winner: null
-									 });
 					} else {
-						newCurrentPlayer = toggleCurrentPlayer();
-						paths = this.smartMove(player1, player2, boardDup, newCurrentPlayer);
-						paths = [].concat.apply([], paths);
-						console.log('paths:');
-						console.log(paths);
-						paths.forEach(obj => {
-							console.log('obj:');
-							console.log(obj);
-							obj.sequence.push([i,j]);
-						})
-						pathSet.push(paths);
+						
 					}
-					pathSet = [].concat.apply([], pathSet);
-					console.log('pathSet:');
-					console.log(pathSet);
-					allPaths.push(pathSet);
 				}
 			}
 		}
@@ -421,7 +402,7 @@ $(document).ready(() => {
 	let c = new ComputerPlayer();
 	let g = new Game(p, c, b);
 	b.grid = [[p, c, c], [c, p, p], [null, null, null]];
-	c.smartMove(p, c, b, c);
+	c.smartMove(p, b);
 	// p.init();
 	// g.init();
 });
