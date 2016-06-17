@@ -141,9 +141,9 @@ class Game {
 		const that = this;
 		
 		board.forEach(row => {
-			console.log(row);
 			if (that.winningSet(row)) {
 				win = true;
+				this.winner = row[0];
 			} else {
 				[0, 1, 2].forEach(idx => cols[idx].push(row[idx]));
 			}
@@ -151,9 +151,11 @@ class Game {
 
 		if (!win) {
 			remaining = cols.concat(diag);
+			
 			remaining.forEach(set => {
 				if (that.winningSet(set)) {
 					win = true;
+					this.winner = set[0];
 				}
 			});
 		}
@@ -297,8 +299,8 @@ class ComputerPlayer {
 		}, 1000);
 	}
 	
-	smartMove(_otherPlayer, _board) {
-		let otherPlayer = _otherPlayer,
+	smartMove(_opponent, _board) {
+		let opponent = _opponent,
 				board = _board,
 				winningMoves = [],
 				protectMoves = [],
@@ -316,10 +318,8 @@ class ComputerPlayer {
 					gameDup.board = boardDup;
 					
 					if (gameDup.checkWin(boardDup.grid)) {
-						console.log("win!")
 						
 					} else if (boardDup.isFull()) {
-						console.log("tie!")
 					} else {
 						
 					}
