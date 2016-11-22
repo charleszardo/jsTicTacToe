@@ -67,50 +67,6 @@ class ComputerPlayer extends Player {
 		return move[0] * 3 + move[1];
 	}
 
-	move() {
-		let winningMoves = [],
-				protectMoves = [],
-				otherMoves = [],
-				that = this,
-				move,
-				i,
-				j;
-
-		for (i = 0; i < this.board.grid.length; i++) {
-			for (j = 0; j < this.board.grid.length; j++) {
-				if (this.board.grid[i][j] === null) {
-					let boardDup = this.board.dupBoard(),
-							gameDup = new Game();
-
-					boardDup.grid[i][j] = this;
-					gameDup.board = boardDup;
-
-					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this) {
-						winningMoves.push([i, j]);
-					}
-
-					boardDup.grid[i][j] = this.opponent;
-
-					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this.opponent) {
-						protectMoves.push([i, j]);
-					} else {
-						otherMoves.push([i, j]);
-					}
-				}
-			}
-		}
-
-		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
-		move = this.moveArrToDig(move);
-
-		console.log(move);
-
-		setTimeout(() => {
-			that.game.move(move, that.game.currentPlayer);
-			that.game.roundOver();
-		}, 1000);
-	}
-
 	smartMove2(_player1, _player2, _board, _currentPlayer) {
 		// console.log(_board.grid);
 		let player1 = _player1,
@@ -203,7 +159,53 @@ class DumbComputerPlayer extends ComputerPlayer {
 		move = availableMoves[Math.floor(Math.random()*availableMoves.length)];
 		move = this.moveArrToDig(move);
 
-		console.log(move);
+		setTimeout(() => {
+			that.game.move(move, that.game.currentPlayer);
+			that.game.roundOver();
+		}, 1000);
+	}
+}
+
+class SmartComputerPlayer extends ComputerPlayer {
+	constructor() {
+		super();
+	}
+
+	move() {
+		let winningMoves = [],
+				protectMoves = [],
+				otherMoves = [],
+				that = this,
+				move,
+				i,
+				j;
+
+		for (i = 0; i < this.board.grid.length; i++) {
+			for (j = 0; j < this.board.grid.length; j++) {
+				if (this.board.grid[i][j] === null) {
+					let boardDup = this.board.dupBoard(),
+							gameDup = new Game();
+
+					boardDup.grid[i][j] = this;
+					gameDup.board = boardDup;
+
+					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this) {
+						winningMoves.push([i, j]);
+					}
+
+					boardDup.grid[i][j] = this.opponent;
+
+					if (gameDup.checkWin(boardDup.grid) && gameDup.winner === this.opponent) {
+						protectMoves.push([i, j]);
+					} else {
+						otherMoves.push([i, j]);
+					}
+				}
+			}
+		}
+
+		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
+		move = this.moveArrToDig(move);
 
 		setTimeout(() => {
 			that.game.move(move, that.game.currentPlayer);
@@ -217,8 +219,9 @@ $(document).ready(() => {
   let p = new HumanPlayer();
 	let c = new ComputerPlayer();
 	let dcp = new DumbComputerPlayer();
+	let scp = new SmartComputerPlayer();
 
-	let g = new Game(p, c, b);
+	let g = new Game(p, scp, b);
 	p.init();
 	g.init();
 });
