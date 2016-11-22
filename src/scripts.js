@@ -61,8 +61,6 @@ class HumanPlayer extends Player {
 class ComputerPlayer extends Player {
 	constructor() {
 		super();
-		this.game;
-		this.color;
 	}
 
 	move() {
@@ -100,6 +98,8 @@ class ComputerPlayer extends Player {
 
 		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
 		move = move[0] * 3 + move[1];
+
+		console.log(move);
 
 		setTimeout(() => {
 			that.game.move(move, that.game.currentPlayer);
@@ -168,6 +168,7 @@ class ComputerPlayer extends Player {
 				}
 			}
 		}
+
 		console.log('allPaths:');
 		console.log(allPaths);
 		allPaths = [].concat.apply([], allPaths);
@@ -175,12 +176,45 @@ class ComputerPlayer extends Player {
 	}
 }
 
+class DumbComputerPlayer extends ComputerPlayer {
+	constructor() {
+		super();
+	}
+
+	move() {
+		let availableMoves = [],
+				that = this,
+				i,
+				j,
+				move;
+
+		for (i = 0; i < this.board.grid.length; i++) {
+			for (j = 0; j < this.board.grid.length; j++) {
+				if (this.board.grid[i][j] === null) {
+					availableMoves.push([i, j]);
+				}
+			}
+		}
+
+		move = availableMoves[Math.floor(Math.random()*availableMoves.length)];
+		move = move[0] * 3 + move[1];
+
+		console.log(move);
+
+		setTimeout(() => {
+			that.game.move(move, that.game.currentPlayer);
+			that.game.roundOver();
+		}, 1000);
+	}
+}
+
 $(document).ready(() => {
 	let b = new Board();
   let p = new HumanPlayer();
 	let c = new ComputerPlayer();
+	let dcp = new DumbComputerPlayer();
 
-	let g = new Game(p, c, b);
+	let g = new Game(p, dcp, b);
 	p.init();
 	g.init();
 });
