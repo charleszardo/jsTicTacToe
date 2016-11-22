@@ -1,5 +1,5 @@
 class Game {
-	constructor(player1, player2, board) {
+	constructor(player1, player2, board, player1Color, player2Color) {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.board = board;
@@ -7,12 +7,13 @@ class Game {
 		this.inPlay = false;
 		this.winner = null;
 		this.handlers = false;
-		this.colors = ["blue", "red"]
+		this.player1Color = player1Color;
+		this.player2Color = player2Color;
 	}
 
 	init() {
-		this.player1.addToGame(this, this.colors[0], this.player2);
-		this.player2.addToGame(this, this.colors[1], this.player1);
+		this.player1.addToGame(this, this.player1Color, this.player2);
+		this.player2.addToGame(this, this.player2Color, this.player1);
 		this.inPlay = true;
 		this.determineInitPlayer();
 		this.initHandlers();
