@@ -116,7 +116,7 @@ class Game {
 
 		$(".winner-phrase").html(text);
 		this.board.hide();
-		$(".game-over").show();
+		$(".game-over").toggle();
 	}
 
 	initHandlers() {
@@ -132,7 +132,7 @@ class Game {
 	}
 
 	reset() {
-		$(".game-over").hide();
+		$(".game-over").toggle();
 		this.board.reset();
 		this.winner = null;
 		this.inPlay = true;

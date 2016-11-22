@@ -19,8 +19,8 @@ class Board {
 					square = "#" + (i * 3 + j);
 					player = this.grid[i][j];
 					color = player.color;
-					$(square).css('background-color', color);
-					$(square).addClass('unavailable');
+					$(square).css("background-color", color);
+					$(square).addClass("unavailable");
 				}
 			}
 		}
@@ -58,6 +58,8 @@ class Board {
 		$(".square").each(sq => {
 			$(`#${sq}`).css("background-color", "");
 		});
+
+		$(".square").removeClass("unavailable");
 	}
 
 	reset() {
