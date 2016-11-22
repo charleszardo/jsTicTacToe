@@ -5,7 +5,8 @@ $(document).ready(() => {
 			dcp = new DumbComputerPlayer(),
 			scp = new SmartComputerPlayer(),
 			player1Color,
-			player2Color;
+			player2Color,
+			g;
 
 	$('.selection-item').click(function() {
 		player1Color = this.id;
@@ -16,7 +17,8 @@ $(document).ready(() => {
 
 		$('.selection-screen').toggle();
 		$('.board').toggle();
- 		let g = new Game(p, scp, b, player1Color, player2Color);
+
+		g = new Game(p, scp, b, player1Color, player2Color);
 		p.init();
 		g.init();
 	})
