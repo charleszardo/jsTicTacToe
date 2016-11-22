@@ -1,21 +1,28 @@
 class Player {
 	constructor() {
-		this.handler = false;
-		this.myTurn = false;
 		this.game;
 		this.color;
+	}
+
+	addToGame(_game, _color, _opponent) {
+		this.game = _game;
+		this.board = _game.board;
+		this.color = _color;
+		this.opponent = _opponent;
+	}
+}
+
+class HumanPlayer extends Player {
+	constructor() {
+		super();
+		this.handler = false;
+		this.myTurn = false;
 	}
 
 	init() {
 		if (!this.handler) {
 			this.initClickHandler();
 		}
-	}
-
-	addToGame(_game, _color, _opponent) {
-		this.game = _game;
-		this.color = _color;
-		this.opponent = _opponent;
 	}
 
 	initClickHandler() {
@@ -51,17 +58,11 @@ class Player {
 	}
 }
 
-class ComputerPlayer {
+class ComputerPlayer extends Player {
 	constructor() {
+		super();
 		this.game;
 		this.color;
-	}
-
-	addToGame(_game, _color, _opponent) {
-		this.game = _game;
-		this.board = _game.board;
-		this.color = _color;
-		this.opponent = _opponent;
 	}
 
 	move() {
@@ -176,7 +177,7 @@ class ComputerPlayer {
 
 $(document).ready(() => {
 	let b = new Board();
-  let p = new Player();
+  let p = new HumanPlayer();
 	let c = new ComputerPlayer();
 
 	let g = new Game(p, c, b);
