@@ -20,6 +20,7 @@ class Board {
 					player = this.grid[i][j];
 					color = player.color;
 					$(square).css('background-color', color);
+					$(square).addClass('unavailable');
 				}
 			}
 		}

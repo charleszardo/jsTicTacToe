@@ -24,6 +24,11 @@ h2 {
 	width: 100px;
 	color: #FFF;
 	line-height: 20px;
+	cursor: pointer;
+}
+
+.unavailable {
+	cursor: not-allowed;;
 }
 
 .game-over {
