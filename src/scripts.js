@@ -67,6 +67,16 @@ class ComputerPlayer extends Player {
 		return move[0] * 3 + move[1];
 	}
 
+	move() {
+		let that = this,
+				movePos = this.moveArrToDig(this.determineMove());
+
+		setTimeout(() => {
+			that.game.move(movePos, that.game.currentPlayer);
+			that.game.roundOver();
+		}, 1000);
+	}
+
 	smartMove2(_player1, _player2, _board, _currentPlayer) {
 		// console.log(_board.grid);
 		let player1 = _player1,
@@ -141,12 +151,10 @@ class DumbComputerPlayer extends ComputerPlayer {
 		super();
 	}
 
-	move() {
+	determineMove() {
 		let availableMoves = [],
-				that = this,
 				i,
-				j,
-				move;
+				j;
 
 		for (i = 0; i < this.board.grid.length; i++) {
 			for (j = 0; j < this.board.grid.length; j++) {
@@ -156,13 +164,7 @@ class DumbComputerPlayer extends ComputerPlayer {
 			}
 		}
 
-		move = availableMoves[Math.floor(Math.random()*availableMoves.length)];
-		move = this.moveArrToDig(move);
-
-		setTimeout(() => {
-			that.game.move(move, that.game.currentPlayer);
-			that.game.roundOver();
-		}, 1000);
+		return availableMoves[Math.floor(Math.random()*availableMoves.length)];
 	}
 }
 
@@ -171,12 +173,10 @@ class SmartComputerPlayer extends ComputerPlayer {
 		super();
 	}
 
-	move() {
+	determineMove() {
 		let winningMoves = [],
 				protectMoves = [],
 				otherMoves = [],
-				that = this,
-				move,
 				i,
 				j;
 
@@ -204,13 +204,7 @@ class SmartComputerPlayer extends ComputerPlayer {
 			}
 		}
 
-		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
-		move = this.moveArrToDig(move);
-
-		setTimeout(() => {
-			that.game.move(move, that.game.currentPlayer);
-			that.game.roundOver();
-		}, 1000);
+		return winningMoves.concat(protectMoves).concat(otherMoves)[0];
 	}
 }
 
