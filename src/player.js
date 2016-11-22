@@ -109,6 +109,8 @@ class SmartComputerPlayer extends ComputerPlayer {
 		let winningMoves = [],
 				protectMoves = [],
 				otherMoves = [],
+        bestMoves = [],
+        move,
 				i,
 				j;
 
@@ -136,7 +138,14 @@ class SmartComputerPlayer extends ComputerPlayer {
 			}
 		}
 
-		return winningMoves.concat(protectMoves).concat(otherMoves)[0];
+    bestMoves = winningMoves.concat(protectMoves);
+    if (bestMoves.length > 0) {
+      move = bestMoves[0]
+    } else {
+      move = otherMoves[Math.floor(Math.random()*otherMoves.length)];
+    }
+    
+    return move;
 	}
 }
 
