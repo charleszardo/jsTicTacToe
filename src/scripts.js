@@ -63,6 +63,10 @@ class ComputerPlayer extends Player {
 		super();
 	}
 
+	moveArrToDig(move) {
+		return move[0] * 3 + move[1];
+	}
+
 	move() {
 		let winningMoves = [],
 				protectMoves = [],
@@ -97,7 +101,7 @@ class ComputerPlayer extends Player {
 		}
 
 		move = winningMoves.concat(protectMoves).concat(otherMoves)[0];
-		move = move[0] * 3 + move[1];
+		move = this.moveArrToDig(move);
 
 		console.log(move);
 
@@ -197,7 +201,7 @@ class DumbComputerPlayer extends ComputerPlayer {
 		}
 
 		move = availableMoves[Math.floor(Math.random()*availableMoves.length)];
-		move = move[0] * 3 + move[1];
+		move = this.moveArrToDig(move);
 
 		console.log(move);
 
@@ -214,7 +218,7 @@ $(document).ready(() => {
 	let c = new ComputerPlayer();
 	let dcp = new DumbComputerPlayer();
 
-	let g = new Game(p, dcp, b);
+	let g = new Game(p, c, b);
 	p.init();
 	g.init();
 });
