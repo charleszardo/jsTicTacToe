@@ -117,11 +117,9 @@ class SmartComputerPlayer extends ComputerPlayer {
 		for (i = 0; i < this.board.grid.length; i++) {
 			for (j = 0; j < this.board.grid.length; j++) {
 				if (this.board.grid[i][j] === null) {
-					let boardDup = this.board.dupBoard(),
-							gameDup = new Game();
+					let boardDup = this.board.dupBoard();
 
 					boardDup.grid[i][j] = this;
-					gameDup.board = boardDup;
 
 					if (boardDup.checkWin() && boardDup.winner === this) {
 						winningMoves.push([i, j]);
@@ -144,7 +142,7 @@ class SmartComputerPlayer extends ComputerPlayer {
     } else {
       move = otherMoves[Math.floor(Math.random()*otherMoves.length)];
     }
-		
+
     return move;
 	}
 }
