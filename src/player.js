@@ -55,6 +55,8 @@ class HumanPlayer extends Player {
 
 	move() {
 		this.myTurn = true;
+		var x = this.board.checkWin();
+		console.log(x);
 	}
 }
 
@@ -152,8 +154,60 @@ class MasterComputerPlayer extends ComputerPlayer {
 		super();
 	}
 
+	togglePlayers(currentPlayer) {
+		if (currentPlayer === this.opponent) {
+			return this;
+		} else {
+			return this.opponent;
+		}
+	}
+
+	determineMove(_currentPlayer = this) {
+		let currentPlayer = _currentPlayer,
+				i,
+				j;
+
+		for (i = 0; i < this.board.grid.length; i++) {
+			for (j = 0; j < this.board.grid.length; j++) {
+				if (this.board.grid[i][j] === null) {
+					let boardDup = this.board.dupBoard();
+
+					boardDup.grid[i][j] = currentPlayer;
+
+					if (boardDup.checkWin()) {
+						if (boardDup.winner === this.opponent) {
+
+						}
+					}
+
+					boardDup.grid[i][j] = this.opponent;
+
+					if (boardDup.checkWin() && boardDup.winner === this.opponent) {
+						protectMoves.push([i, j]);
+					} else {
+						otherMoves.push([i, j]);
+					}
+				}
+			}
+		}
+
+    bestMoves = winningMoves.concat(protectMoves);
+    if (bestMoves.length > 0) {
+      move = bestMoves[0]
+    } else {
+      move = otherMoves[Math.floor(Math.random()*otherMoves.length)];
+    }
+
+    return move;
+	}
+}
+
+class MasterComputerPlayer2 extends ComputerPlayer {
+	constructor() {
+		super();
+	}
+
 	determineMove(_player1, _player2, _board, _currentPlayer) {
-		// console.log(_board.grid);
 		let player1 = _player1,
 			  player2 = _player1,
 					board = _board,
