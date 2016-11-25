@@ -4,6 +4,7 @@ class Board {
 								 [null, null, null],
 								 [null, null, null]];
 		this.el = $(".board");
+		this.winner = null;
 	}
 
 	updateDisplay() {
@@ -72,8 +73,12 @@ class Board {
 				}
 			});
 		}
-		// console.log(win);
+		
 		return win;
+	}
+
+	getWinner() {
+		return this.winner;
 	}
 
 	dupBoard() {

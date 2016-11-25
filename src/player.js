@@ -123,17 +123,13 @@ class SmartComputerPlayer extends ComputerPlayer {
 					boardDup.grid[i][j] = this;
 					gameDup.board = boardDup;
 
-					if (boardDup.checkWin()) {
-						console.log([i,j]);
-						console.log(gameDup.winner);
-					}
-					if (boardDup.checkWin() && gameDup.winner === this) {
+					if (boardDup.checkWin() && boardDup.winner === this) {
 						winningMoves.push([i, j]);
 					}
 
 					boardDup.grid[i][j] = this.opponent;
 
-					if (boardDup.checkWin() && gameDup.winner === this.opponent) {
+					if (boardDup.checkWin() && boardDup.winner === this.opponent) {
 						protectMoves.push([i, j]);
 					} else {
 						otherMoves.push([i, j]);
@@ -148,7 +144,7 @@ class SmartComputerPlayer extends ComputerPlayer {
     } else {
       move = otherMoves[Math.floor(Math.random()*otherMoves.length)];
     }
-    console.log(this.board);
+		
     return move;
 	}
 }
