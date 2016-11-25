@@ -4,6 +4,7 @@ $(document).ready(() => {
 			c = new ComputerPlayer(),
 			dcp = new DumbComputerPlayer(),
 			scp = new SmartComputerPlayer(),
+			mcp = new MasterComputerPlayer(),
 			player1Color,
 			player2Color,
 			g;
@@ -18,7 +19,7 @@ $(document).ready(() => {
 		$('.selection-screen').toggle();
 		$('.board').toggle();
 
-		g = new Game(p, scp, b, player1Color, player2Color);
+		g = new Game(p, mcp, b, player1Color, player2Color);
 		p.init();
 		g.init();
 	})

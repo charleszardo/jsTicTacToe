@@ -162,30 +162,37 @@ class MasterComputerPlayer extends ComputerPlayer {
 		}
 	}
 
-	determineMove(_currentPlayer = this) {
+	determineMove(_currentPlayer = this, _board = this.board) {
 		let currentPlayer = _currentPlayer,
+				board = _board,
 				i,
 				j;
 
 		for (i = 0; i < this.board.grid.length; i++) {
 			for (j = 0; j < this.board.grid.length; j++) {
-				if (this.board.grid[i][j] === null) {
-					let boardDup = this.board.dupBoard();
+				if (board.grid[i][j] === null) {
+					let boardDup = board.dupBoard(),
+							newFutureMoves = [],
+							nextPlayer,
+							futureMoves;
 
 					boardDup.grid[i][j] = currentPlayer;
 
 					if (boardDup.checkWin()) {
-						if (boardDup.winner === this.opponent) {
-
+						if (boardDup.getWinner() === this.opponent) {
+							return false;
+						} else {
+							return [[i,j]];
 						}
-					}
-
-					boardDup.grid[i][j] = this.opponent;
-
-					if (boardDup.checkWin() && boardDup.winner === this.opponent) {
-						protectMoves.push([i, j]);
 					} else {
-						otherMoves.push([i, j]);
+						nextPlayer = this.togglePlayers(currentPlayer, boardDup);
+						futureMoves = this.determineMove(nextPlayer);
+						newFutureMoves =
+						futureMoves.forEach(function(move) {
+							if (move) {
+								newFutureMoves.push([i,j]);
+							}
+						})
 					}
 				}
 			}
