@@ -48,7 +48,7 @@ class Game {
 	}
 
 	roundOver() {
-		if (this.checkWin(this.board.grid)) {
+		if (this.board.checkWin()) {
 			this.inPlay = false;
 			this.determineWinner();
 			this.gameOver();
@@ -59,42 +59,6 @@ class Game {
 		} else {
 			this.switchPlayers();
 		}
-	}
-
-	checkWin(board) {
-		let cols = [[], [], []],
-				diag = [[board[0][0], board[1][1], board[2][2]],
-								[board[0][2], board[1][1], board[2][0]]],
-				win = false,
-				remaining;
-
-		const that = this;
-
-		board.forEach(row => {
-			if (that.winningSet(row)) {
-				win = true;
-				this.winner = row[0];
-			} else {
-				[0, 1, 2].forEach(idx => cols[idx].push(row[idx]));
-			}
-		});
-
-		if (!win) {
-			remaining = cols.concat(diag);
-
-			remaining.forEach(set => {
-				if (that.winningSet(set)) {
-					win = true;
-					this.winner = set[0];
-				}
-			});
-		}
-
-		return win;
-	}
-
-  winningSet(set) {
-		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
 	}
 
 	determineWinner(tie=false) {

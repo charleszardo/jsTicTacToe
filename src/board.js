@@ -40,6 +40,42 @@ class Board {
 		return full;
 	}
 
+	winningSet(set) {
+		return set[0] !== null && set[0] === set[1] && set[1] === set[2];
+	}
+
+	checkWin() {
+		let cols = [[], [], []],
+				diag = [[this.grid[0][0], this.grid[1][1], this.grid[2][2]],
+								[this.grid[0][2], this.grid[1][1], this.grid[2][0]]],
+				win = false,
+				remaining;
+
+		const that = this;
+
+		this.grid.forEach(row => {
+			if (that.winningSet(row)) {
+				win = true;
+				this.winner = row[0];
+			} else {
+				[0, 1, 2].forEach(idx => cols[idx].push(row[idx]));
+			}
+		});
+
+		if (!win) {
+			remaining = cols.concat(diag);
+
+			remaining.forEach(set => {
+				if (that.winningSet(set)) {
+					win = true;
+					this.winner = set[0];
+				}
+			});
+		}
+		// console.log(win);
+		return win;
+	}
+
 	dupBoard() {
 		let b = new Board();
 		b.grid = $.extend(true, [], this.grid);
