@@ -50,20 +50,10 @@ class Game {
 	roundOver() {
 		if (this.board.checkWin()) {
 			this.inPlay = false;
-			this.determineWinner();
-			this.gameOver();
-		} else if (this.board.isFull()) {
-			this.inPlay = false;
-			this.determineWinner(true);
+			this.winner = this.board.getWinner();
 			this.gameOver();
 		} else {
 			this.switchPlayers();
-		}
-	}
-
-	determineWinner(tie=false) {
-		if (!tie) {
-			this.winner = this.currentPlayer;
 		}
 	}
 

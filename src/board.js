@@ -73,7 +73,11 @@ class Board {
 				}
 			});
 		}
-		
+
+		if (this.isFull()) {
+			win = true;
+		}
+
 		return win;
 	}
 
