@@ -10,6 +10,10 @@ class Player {
 		this.color = _color;
 		this.opponent = _opponent;
 	}
+
+	getColor() {
+		return this.color;
+	}
 }
 
 class HumanPlayer extends Player {
@@ -66,6 +70,7 @@ class ComputerPlayer extends Player {
 	}
 
 	moveArrToDig(move) {
+		console.log(move);
 		return move[0] * 3 + move[1];
 	}
 
@@ -154,6 +159,32 @@ class MasterComputerPlayer extends ComputerPlayer {
 		super();
 	}
 
+	determineMove() {
+		let new_node = new TTTNode(this.board, this, this.opponent),
+				move;
+		new_node.children().forEach(child => {
+			if (child.winningNode(this)) {
+				move = child.prev_move_pos;
+				return;
+			}
+		});
+
+		new_node.children().forEach(child => {
+			if (!move && !child.losingNode(this)) {
+				move = child.prev_move_pos;
+				return;
+			}
+		});
+
+		return move;
+	}
+}
+
+class MasterComputerPlayer3 extends ComputerPlayer {
+	constructor() {
+		super();
+	}
+
 	togglePlayers(currentPlayer) {
 		if (currentPlayer === this.opponent) {
 			return this;
@@ -187,12 +218,15 @@ class MasterComputerPlayer extends ComputerPlayer {
 					} else {
 						nextPlayer = this.togglePlayers(currentPlayer, boardDup);
 						futureMoves = this.determineMove(nextPlayer);
-						newFutureMoves =
-						futureMoves.forEach(function(move) {
-							if (move) {
-								newFutureMoves.push([i,j]);
-							}
-						})
+						if (futureMoves) {
+							futureMoves.forEach(move => {
+								if (move) {
+									newFutureMoves.push([i,j]);
+								}
+							})
+						} else {
+								return false;
+						}
 					}
 				}
 			}
