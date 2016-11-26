@@ -7,7 +7,7 @@ class TTTNode {
   }
 
   children() {
-    return this.empty_positions().map(pos => {
+    return this.emptyPositions().map(pos => {
       let test_board = this.board.dupBoard(),
           new_next_mover = this.other_player,
           new_node;
@@ -19,43 +19,43 @@ class TTTNode {
     });
   }
 
-  losing_node(evaluator) {
-    if (board.checkWin()) {
-      if (board.getWinner()) {
-        return evaluator != board.getWinner();
+  losingNode(evaluator) {
+    if (this.board.checkWin()) {
+      if (this.board.getWinner()) {
+        return evaluator != this.board.getWinner();
       } else {
         return false;
       }
     }
 
-    if (evaluator === next_mover) {
-      return this.children.every(child => {
-        child.losing_node(evaluator);
+    if (evaluator === this.next_mover) {
+      return this.children().every(child => {
+        child.losingNode(evaluator);
       });
     } else {
-      return this.children.some(child => {
-        child.losing_node(evaluator);
+      return this.children().some(child => {
+        child.losingNode(evaluator);
       });
     }
   }
 
-  winning_node(evaluator) {
-    if (board.checkWin()) {
-      return evaluator === board.getWinner();
+  winningNode(evaluator) {
+    if (this.board.checkWin()) {
+      return evaluator === this.board.getWinner();
     }
 
-    if (evaluator === next_mover) {
-      return this.children.some(child => {
-        child.winning_node(evaluator);
+    if (evaluator === this.next_mover) {
+      return this.children().some(child => {
+        child.winningNode(evaluator);
       });
     } else {
-      return this.children.every(child => {
-        child.winning_node(evaluator);
+      return this.children().every(child => {
+        child.winningNode(evaluator);
       });
     }
   }
 
-  empty_positions() {
+  emptyPositions() {
     let empty_positions = [];
 
     this.board.grid.forEach((row, row_idx) => {
